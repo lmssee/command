@@ -1,0 +1,62 @@
+{
+  "name": "is-tl",
+  "version": "0.0.0",
+  "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
+  "type": "module",
+  "main": "out/index.cjs",
+  "module": "out/index.mjs",
+  "typings": "types/index.d.ts",
+  "scripts": {
+    "build": "npm run clear && npm run b",
+    "b": "rollup --config  rollup.config.js    && tsc -p  tsconfig.types.json",
+    "clear": "npx  ismi r  out  types",
+    "clean": "npx ismi u -d && npx ismi r  node_modules  package-lock.json && npm install && npm  run build",
+    "test": "npm  run build && node  ./bin/.js   u -n",
+    "up": "npx ismi u -n"
+  },
+  "files": [
+    "bin",
+    "out",
+    "types"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lmssee/terminal.git"
+  },
+  "author": "lmssee <lmssee@outlook.com>  (https://lmssee.com)",
+  "license": "ISC",
+  "keywords": [
+    "lmssee",
+    "lmssee terminal",
+    "terminal",
+    "is mi",
+    "is mi terminal"
+  ],
+  "homepage": "https://lmssee.github.io/terminal",
+  "bugs": {
+    "url": "https://github.com/lmssee/terminal/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/node": "^20.14.0",
+    "javascript-obfuscator": "^4.1.0",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "rollup-plugin-obfuscator": "^1.1.0",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "is-node-tools": "^0.0.0",
+    "is-tools": "^0.0.0"
+  },
+  "bin": {
+    "is-tl": "bin/is-tl.js"
+  }
+}
