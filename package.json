@@ -1,6 +1,6 @@
 {
   "name": "ismi-command",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
   "type": "module",
   "main": "out/index.cjs",
@@ -8,10 +8,10 @@
   "typings": "types/index.d.ts",
   "scripts": {
     "build": "npm run clear && npm run b",
-    "b": "rollup --config  rollup.config.js    && tsc -p  tsconfig.types.json",
-    "clear": "npx  ismi r  out  types",
-    "clean": "npx ismi u -d && npx ismi r  node_modules  package-lock.json && npm install && npm  run build",
-    "test": "npm  run build && node  ./bin/.js   u -n",
+    "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
+    "clear": "npx ismi r out types",
+    "clean": "npx ismi u-d && npx ismi r node_modules package-lock.json && npm install && npm run build",
+    "test": "rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369 ",
     "up": "npx ismi u -n"
   },
   "files": [

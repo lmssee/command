@@ -27,12 +27,12 @@ export default {
     },
   ],
   // 配置需要排除的包
-  external: (id) => /^(node:)|^(tslib)|^(is-tools)|(is-node-tools)/.test(id),
+  external: (id) => /^(node:)|^(tslib)|^(ismi-)/.test(id),
   plugins: [
     resolve(),
     commonjs(),
     // 打包压缩，自动去注释
-    terser(),
+    // terser(),
     // 可打包 json 内容
     json(),
     typescript({}),

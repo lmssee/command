@@ -130,3 +130,28 @@ export type StateType = { code: 1 | 2 | 3 | 4, text: 'start' | 'bind over' | 'ru
 
 /** args type  */
 export type ArgsType = undefined | { name: string, value?: string[], options?: { name: string, value?: string[] }[] }[] | [];
+
+
+
+/** 子项的类型 */
+type ManageDataTypeItem = { name?: string; value?: (string | boolean)[] | [] }
+
+/** 子项列的类型 */
+type ManageDataTypeObject = {
+  name: string;
+  value?: (string | boolean)[] | [];
+  options?: ManageDataTypeItem[] | [];
+}
+
+
+/** 解析用户参数数据 */
+export type ManageDataType = {
+  result: ManageDataTypeObject[];
+  name: string;
+  object: ManageDataTypeObject;
+  item: ManageDataTypeItem;
+  /** 重置父项 */
+  resetObject: (name: string) => void;
+  /** 重置子项 */
+  resetItem: (name: string) => void;
+} 

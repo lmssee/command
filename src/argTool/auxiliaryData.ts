@@ -72,40 +72,50 @@ export class MyArg extends Array {
    */
   get $map(): $MapType {
     if (!this.valueOf()) return {};
-    const temporary: $MapType = new Object() as any;
-    (this.valueOf() as []).forEach((currentElement: any) => {
+    // 简单复制当前值
+    const tempValue: any[] = JSON.parse(JSON.stringify(this.valueOf()));
+    // 结果对象
+    const resultValue: $MapType = new Object() as any;
+    tempValue.forEach((currentElement: any) => {
       // 临时演员
-      let _temp: any =
-        currentElement.value == undefined
-          ? {}
-          : { value: currentElement.value };
-
+      let _temp: any = resultValue[currentElement.name] || {};
+      /** 判断是否已经存在同名属性 */
+      let valueIsExist = Object.keys(_temp).length > 0;
+      // 判断当前是否有 value 属性，并判断是否有同名属性，有则追加，没有则直接
+      currentElement.value.length > 0 && (_temp.value = valueIsExist ? _temp.value.concat(currentElement.value) : currentElement.value);
       // 当前元素有子项
       if (currentElement.options) {
-        // 每一个子项再遍历
-        currentElement.options.forEach((_currentEle: any) => {
-          _temp[_currentEle.name] = _currentEle.value
-            ? _currentEle.value.length == 1
-              ? _currentEle.value[0]
-              : _currentEle.value
-            : true;
-        });
+        // 每一个子项再遍历（遍历需考虑旧数据问题，即已经存在同名属性 valueIsExist 为 true 情况）
+        currentElement.options.forEach((_currentEle: any) =>
+          _temp[_currentEle.name] = (valueIsExist && _temp[_currentEle.name] !== undefined) ? _temp[_currentEle.name].concat(_currentEle.value) : _currentEle.value);
       }
-      temporary[currentElement.name] =
-        _temp ||
-        (currentElement.value &&
-          (currentElement.value.length == 1
-            ? currentElement.value[0]
-            : currentElement.value)) ||
-        true;
+      resultValue[currentElement.name] = _temp;
     });
-    Object.defineProperty(this, "$map", {
-      value: temporary,
-      writable: false,
-      enumerable: true,
-      configurable: false,
+
+    return resultValue;
+  }
+
+  /** 返回一个数组对象，有序的，与本体值类似，每一个元素都可以做会返回值。
+   * 
+   * 
+   * 主要关注的是有序
+   */
+  get $arrMap(): [] | {}[] {
+    if (!this.valueOf()) return [];
+    // 简单复制当前值
+    const tempValue: any[] = JSON.parse(JSON.stringify(this.valueOf()));
+
+    return tempValue.map((currentElement: any) => {
+      // 临时演员
+      let resultValue: any = {};
+      // 临时演员
+      const _temp: any = resultValue[currentElement.name] = {};
+      // 判断当前是否有 value 属性
+      currentElement.value.length > 0 && (_temp.value = currentElement.value);
+      // 当前元素有子项
+      if (currentElement.options) currentElement.options.forEach((_currentEle: any) => _temp[_currentEle.name] = _currentEle.value);
+      return resultValue;
     });
-    return temporary;
   }
 
   /** 仅上层命令导出 */
@@ -115,7 +125,7 @@ export class MyArg extends Array {
       (currentEle: { name: string }) => currentEle.name
     );
     Object.defineProperty(this, "$only", {
-      value,
+      value: [...new Set(value)],
       writable: false,
       configurable: false,
     });
@@ -132,4 +142,8 @@ export class MyArg extends Array {
   get $isVoid(): boolean {
     return originalArg.length == 0;
   }
+}
+
+function getMapValue() {
+
 }

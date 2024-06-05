@@ -271,7 +271,7 @@ class Args {
    * 获取有序的参数
    * 
     */
-  get getArgs() {
+  get args() {
     const a: MyArg = new MyArg();
     if (auxiliaryData.args)
       auxiliaryData.args.forEach((currentE: any) => a.push(currentE));

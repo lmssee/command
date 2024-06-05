@@ -138,7 +138,7 @@ command.bind({
 command.run(); // Users can use `gig init ts`
 ```
 
-- Finally, you can use `getArgs` to obtain the user's actual value input
+- Finally, you can use `args` to obtain the user's actual value input
 
 ```ts
     ... // other code
@@ -148,7 +148,7 @@ command.run(); // Users can use `gig init ts`
       *
       *  This mode preserves user input as much as possible, but also discards some unrecognized inputs
       * */
-    command.getArgs;
+    command.args;
     /**
      *  Obtain the Object form of the processed user input parameters
      *
@@ -157,24 +157,31 @@ command.run(); // Users can use `gig init ts`
      * **_In this mode, `subOptions` will overwrite the superior's `value`_**
      *
      * */
-    command.getArgs.map;
+    command.args.$map;
+    /**
+     * For the convenience of obtaining ordered object pattern data
+     * 
+     *  this has been added
+     *
+     */
+    command.args.$arrMap
      /**
       *   Obtain a simple form of the processed user input parameters
       *
       *  This mode is suitable for simple commands, only checking if the command has
       * */
-    command.getArgs.only;
+    command.args.$only;
 
       /**
    *
    *   Is it empty? Check if the user has not entered command parameters
    */
-    command.getArgs.$isVoid;
+    command.args.$isVoid;
     /**
      *
      * User's original input parameters
      */
-    command.getArgs.$original;
+    command.args.$original;
 
 
 ```

@@ -5,6 +5,7 @@
     "./src/**/*.ts",
     "**.d.ts",
     "./src/**/**/*.ts",
+    "test/**/*.ts",
     "actions.ts"
   ],
   "exclude": [

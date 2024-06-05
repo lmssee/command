@@ -14,6 +14,11 @@
 - default
 - data type
 
+## 0.0.1 (6 月 5 日 2024 年)
+
+- `arg` 部分返回的 `arg` 属性添加了 `$arrMap` 属性，即避免了 `args.$map` 属性的无序性，有保证了其结构易用性
+- 整理了 `args` 的返回值，不再在 `value` 值为空数组时仅返回 `true`，也不再在 `value` 值为一个元素的数组是返回该元素。原本以为这么会简便些，在实际使用中发现需要做大量的判断
+
 ## 0.0.0 (6 月 4 日 2024 年)
 
 - 项目做了迁移
@@ -93,9 +98,9 @@
 
 ## [0.0.8](./ReadMe.md#args-section-get-user-start-program-params) （5 月 18 日 2024 年）
 
-- 修改 `args` 使用 `command.getArgs.map` 时用户没有返回输入时返回值由 `undefined` 更改为 `{}`
-- 修改 `args` 使用 `command.getArgs` 时用户没有返回输入时返回值由 `undefined` 更改为 `[]`
-- 修改 `args` 使用 `command.getArgs.only` 时用户没有返回输入时返回值由 `undefined` 更改为 `[]`
+- 修改 `args` 使用 `command.args.$map` 时用户没有返回输入时返回值由 `undefined` 更改为 `{}`
+- 修改 `args` 使用 `command.args` 时用户没有返回输入时返回值由 `undefined` 更改为 `[]`
+- 修改 `args` 使用 `command.args.$only` 时用户没有返回输入时返回值由 `undefined` 更改为 `[]`
 
 ## [0.0.7](./ReadMe.md#args-section-get-user-start-program-params) （5 月 18 日 2024 年）
 

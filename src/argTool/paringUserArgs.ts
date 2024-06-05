@@ -1,10 +1,27 @@
 import showVersion from "./showVersion";
 import auxiliaryData from "./auxiliaryData";
+import { ManageDataType } from "./types";
 
 /** Parsing user parameters
  *
  *
- * 解析用户参数
+ * 解析用户参数 
+ * 
+ * 
+ * 将用的输入参数解析为一个数组，数组包含匹配（可能有重复的）的每一项
+ * 
+ * 
+ * ```ts
+ *   result :  {
+ *        name:string, 
+ *        value?: boolean|string[] ,
+ *        options?: {
+ *            name: string,
+ *            value: boolean|string[]
+ *        }[]  
+ *     } []
+ * 
+ * ```
  */
 export default function paringUserArgs(): any {
   // 用户没有传参数
@@ -42,28 +59,16 @@ export default function paringUserArgs(): any {
       result.length == 0
         ? "help"
         : result[0].options == undefined || result[0].options?.length == 0
-        ? result[0].name
-        : [result[0].name, result[0].options[0].name]);
+          ? result[0].name
+          : [result[0].name, result[0].options[0].name]);
   }
   // 正常的解析
   result = manageResult(_args);
   auxiliaryData.args = result;
 }
 
-const manageData: {
-  result: any[];
-  name: string;
-  object: {
-    name: string;
-    value?: (string | boolean)[];
-    options?: { name?: string; value?: (string | boolean)[] }[];
-  };
-  item: { name?: string; value?: (string | boolean)[] };
-  /** 重置父项 */
-  resetObject: (name: string) => void;
-  /** 重置子项 */
-  resetItem: (name: string) => void;
-} = {
+/** 整理数据用到的数据 */
+const manageData: ManageDataType = {
   result: [],
   name: "",
   object: { name: "", value: [], options: [] },
@@ -90,16 +95,20 @@ function manageResult(data: string[]): any {
       return dataIsValue(currentArg);
     // 参看该值是否能匹配上一级
     let temp1;
+    /** 查看是否为全拼 */
     if (auxiliaryData.originalBind[currentArg]) {
       temp1 = currentArg;
+      /** 参看是否为缩写 */
     } else if (auxiliaryData.abbr[currentArg]) {
       temp1 = auxiliaryData.abbr[currentArg];
     }
     /** 当尚未有匹配项时，检测是否有  */
     if (name !== "" && auxiliaryData.originalBind[name].options) {
       let temp2;
+      /** 查看是否为 options 全拼  */
       if (auxiliaryData.originalBind[name].options[currentArg]) {
         temp2 = currentArg;
+        /** 参看是否为 options 的缩写 */
       } else if (auxiliaryData.abbr[`${name}^${currentArg}`]) {
         temp2 = auxiliaryData.abbr[`${name}^${currentArg}`];
       }
@@ -114,6 +123,7 @@ function manageResult(data: string[]): any {
     return dataIsValue(currentArg);
   });
 
+  /**  作为值处理数据 */
   addResultItem();
   return manageData.result;
 }
@@ -135,20 +145,21 @@ function dataIsOption(name: string) {
   // 上一个子项值存在
   if (item.name) {
     if (item.value?.length == 0) delete item.value;
-    object.options?.push(item);
+    (object.options as any).push(item);
   }
   manageData.resetItem(name);
 }
 
 // 当值被认定为参数的值
-function dataIsValue(value: string | boolean) {
-  value = value == "true" ? true : value == "false" ? false : value;
-  if (manageData.name != "") {
-    if (manageData.item.name) {
-      manageData.item.value?.push(value);
-    } else {
-      manageData.object.value?.push(value);
-    }
+function dataIsValue(value: string | boolean | number) {
+  value = value == "true" ? true : value == "false" ? false : value == Number(value) ? Number(value) : value;
+  if (manageData.name === "") return;
+  if (manageData.item.name) {
+    // @ts-ignore  当下一定有值，判断当下是否有子项
+    manageData.item.value.push(value);
+  } else {
+    // @ts-ignore 当下一定有值，添加到项
+    manageData.object.value?.push(value);
   }
 }
 
@@ -160,13 +171,15 @@ function addResultItem() {
   if (name === "") return;
   // 没有 value 值
   if (object.value?.length == 0) delete object.value;
-  //  若有子项将子项推进父项
+  // @ts-expect-error  若有子项将子项推进父项
   item.name && object.options?.push(item);
-  // 整理子项
-  if (object.options?.length == 0) {
-    delete object.options;
-  } else if (item.value?.length == 0) {
-    delete item.value;
-  }
+  // // 整理子项列
+  // if (object.options?.length == 0) {
+  //   delete object.options;
+  // } else if (item.value?.length == 0) {
+  //   // 整理当前子项
+  //   delete item.value;
+  // }
+  // 将数据推进结果
   result.push(JSON.parse(JSON.stringify(object)));
 }

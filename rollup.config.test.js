@@ -15,11 +15,11 @@ export default {
       preserveModules: true,
       sourcemap: false,
       exports: "named",
-      dir: "out",
+      dir: "test/out",
     },
   ],
   // 配置需要排除的包
-  external: (id) => /^(node:)|^(tslib)|^(is-tools)|(is-node-tools)/.test(id),
+  external: (id) => /^(node:)|^(tslib)|^(ismi-)/.test(id),
   plugins: [
     resolve(),
     commonjs(),
