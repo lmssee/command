@@ -1,5 +1,5 @@
 {
-  "name": "is-tl",
+  "name": "ismi-command",
   "version": "0.0.0",
   "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
   "type": "module",
@@ -21,20 +21,21 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lmssee/terminal.git"
+    "url": "git+https://github.com/lmssee/command.git"
   },
   "author": "lmssee <lmssee@outlook.com>  (https://lmssee.com)",
   "license": "ISC",
   "keywords": [
     "lmssee",
-    "lmssee terminal",
-    "terminal",
-    "is mi",
-    "is mi terminal"
+    "letmiseesee",
+    "command",
+    "ismi",
+    "is-mi",
+    "is-mi-command"
   ],
-  "homepage": "https://lmssee.github.io/terminal",
+  "homepage": "https://lmssee.github.io/command",
   "bugs": {
-    "url": "https://github.com/lmssee/terminal/issues"
+    "url": "https://github.com/lmssee/command/issues"
   },
   "publishConfig": {
     "access": "public",
@@ -53,10 +54,10 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "is-node-tools": "^0.0.0",
-    "is-tools": "^0.0.0"
+    "ismi-node-tools": "^0.0.0",
+    "ismi-js-tools": "^0.0.0"
   },
   "bin": {
-    "is-tl": "bin/is-tl.js"
+    "ismi-command": "bin/ismi-command.js"
   }
 }

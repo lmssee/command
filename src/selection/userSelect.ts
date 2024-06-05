@@ -1,4 +1,4 @@
-import { Color, cursorShow, readInput, t } from "is-node-tools";
+import { Color, cursorShow, readInput, t } from "ismi-node-tools";
 import draw from "./draw";
 import selectionData from "./selectionData";
 /**

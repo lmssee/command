@@ -1,7 +1,7 @@
 import { DataType, ParamDataType } from "./types";
 import computeCodeCount from "./computeCodeCount";
 import changeCurrentIssue from "./changeCurrentIssue";
-import { cursorHide, cursorShow } from "is-node-tools";
+import { cursorHide, cursorShow } from "ismi-node-tools";
 
 export const originalData: { data: ParamDataType, type: (0 | 1), progressCount: number, indexOfCursor: number } = {
     data: "",

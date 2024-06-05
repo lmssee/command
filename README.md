@@ -1,24 +1,24 @@
-# is-tl
+# is mi command
 
 This is a project for terminal interaction, serving the [cil](https://github.com/lmssee/cli) class
 
 ## language
 
 <table><tr>
-<td><a href="https://github.com/lmssee/terminal/blob/main/README.md"  target="_self">English</a></td>
-<td><a href="https://github.com/lmssee/terminal/blob/main/自述文件.md"  target="_self">中文</a></td>
+<td><a href="https://github.com/lmssee/command/blob/main/README.md"  target="_self">English</a></td>
+<td><a href="https://github.com/lmssee/command/blob/main/自述文件.md"  target="_self">中文</a></td>
 </tr></table>
 
 ## install
 
 ```sh
-npm install   is-tl  --save
+npm install   ismi-command  --save
 ```
 
 ## use
 
 ```js
-import Command from "is-tl";
+import Command from "ismi-command";
 ```
 
 ### Command section
@@ -54,13 +54,13 @@ _When you have multiple configuration items, you can use an array to group the c
 
 - Simplified example
   ```js
-  import { Args } from "is-tl";
+  import { Args } from "ismi-command";
   const command: Args = new Args();
   command.bind("init <-i> (Initialize configuration file)").run();
   ```
 - Simple configuration example
   ```js
-  import { Args } from "is-tl";
+  import { Args } from "ismi-command";
   const command: Args = new Args();
   command
     .bind({
@@ -73,7 +73,7 @@ _When you have multiple configuration items, you can use an array to group the c
 - Example of carrying sub item configuration
 
 ```js
-import { Args } from "is-tl";
+import { Args } from "ismi-command";
 const command: Args = new Args();
 command.bind({
   name: "init",
@@ -91,7 +91,7 @@ command.run(); // Users can use `gig init -o`
 - Example of carrying detailed configuration of sub items
 
 ```js
-import { Args } from "is-tl";
+import { Args } from "ismi-command";
 const command: Args = new Args();
 command.bind({
   name: "init",
@@ -121,7 +121,7 @@ command.run(); // Users can use `gig init -o`
 - Strange behavior binding parameters:
 
 ```ts
-import { Args } from "is-tl";
+import { Args } from "ismi-command";
 const command: Args = new Args();
 command.bind({
   "init <-i> (Initialize project)": [
@@ -233,14 +233,14 @@ _A function waiting for user input. Because it needs to wait, it is asynchronous
 The simplest use :
 
 ```js
-import { question } from "is-tl";
+import { question } from "ismi-command";
 const result = await question("What do you want for lunch");
 ```
 
 Using custom configurations can provide users with a better experience.
 
 ```js
-import { question } from "is-tl";
+import { question } from "ismi-command";
 const result = await question({
   text: "What do you want for lunch",
   tip: "Hamburg or Italian pasta",
@@ -251,7 +251,7 @@ const result = await question({
 You can also configure 'tip' as an array and configure Q&A as a simple selection.At this point, users can only choose from the values provided by 'tip' **Only suitable for simple selection, such as' yes' or 'no' or 'male' or 'female' options with more words, it is recommended to use [selection] (# selection - section - selection mode -)**
 
 ```js
-import { question } from "is-tl";
+import { question } from "ismi-command";
 
 const result = await question({
   text: "What do you want for lunch", // Required parameters
@@ -265,7 +265,7 @@ const result = await question({
 Multiple questions can also be provided at once, just place them in an array (array and object patterns can be mixed and matched)
 
 ```js
-import { question } from "is-tl";
+import { question } from "ismi-command";
 
 const result = await question([
   {
@@ -291,7 +291,7 @@ _A function waiting for user input. Because it needs to wait, it is asynchronous
 The simplest use :
 
 ```js
-import { selection } from "is-tl";
+import { selection } from "ismi-command";
 console.log("What do you want for lunch");
 const result = await selection([
   "Hamburg",
@@ -305,7 +305,7 @@ const result = await selection([
 Full configuration :
 
 ```js
-import  { selection } from "is-tl";
+import  { selection } from "ismi-command";
 
 const result = await selection({
     showInfo: true,
@@ -326,4 +326,4 @@ const result = await selection({
 
 _If you don't want to display the issue and preview, you can use the pattern of the incoming object for custom configuration_
 
-If you have any questions, you can directly [submit question](https://github.com/lmssee/terminal/issues/new)
+If you have any questions, you can directly [submit question](https://github.com/lmssee/command/issues/new)

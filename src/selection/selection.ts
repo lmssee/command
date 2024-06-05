@@ -1,4 +1,4 @@
-import { cursorHide, t } from "is-node-tools";
+import { cursorHide, t } from "ismi-node-tools";
 import draw from "./draw";
 import selectionData from "./selectionData";
 import { ParamDataType } from "./types";

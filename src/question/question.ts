@@ -2,7 +2,7 @@ import { ParamDataType } from "./types";
 import questionData, { originalData } from "./questionData";
 import draw from "./draw";
 import userInput from "./userInput";
-import { t } from "is-node-tools";
+import { t } from "ismi-node-tools";
 
 
 const { stdin, stdout } = process;

@@ -31,7 +31,7 @@ class Command extends Args {
         })
     }
 
-    /**  This method is detached from  `selection` and can directly `import {selection} form "is-tl";`
+    /**  This method is detached from  `selection` and can directly `import {selection} form "ismi-command";`
      * 
      *  For detailed usage, please refer to : {@link selection}
      * 
@@ -49,14 +49,14 @@ class Command extends Args {
      * ```
      * 
      * 
-     * 该应用抽离于 `selection` , 可直接 `import  { selection } form  "is-tl";`
+     * 该应用抽离于 `selection` , 可直接 `import  { selection } form  "ismi-command";`
      * 
      * 
      *  详细用法参见 ： {@link selection}
      * */
     selection = selection;
 
-    /**  This method is detached from  `question` and can directly `import { question } form "is-tl";`
+    /**  This method is detached from  `question` and can directly `import { question } form "ismi-command";`
      * 
      *  For detailed usage, please refer to : {@link question}
      * 
@@ -78,7 +78,7 @@ class Command extends Args {
      * ```
      * 
      * 
-     * 该应用抽离于 `question` , 可直接 `import  { question } form  "is-tl";`
+     * 该应用抽离于 `question` , 可直接 `import  { question } form  "ismi-command";`
      * 
      * 
      *  详细用法参见 ： {@link question}

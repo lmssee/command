@@ -10,7 +10,7 @@ import {
   getCallerFilename,
   path,
   readFileToJsonSync,
-} from "is-node-tools";
+} from "ismi-node-tools";
 import { arch, hostname } from "node:os";
 import auxiliaryData from "./auxiliaryData";
 

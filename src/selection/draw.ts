@@ -1,4 +1,4 @@
-import { t, Color, cursorMoveUp } from "is-node-tools";
+import { t, Color, cursorMoveUp } from "ismi-node-tools";
 import selectionData from "./selectionData";
 import setColumns from "./setColumn";
 const { stdout } = process;

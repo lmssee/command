@@ -1,5 +1,5 @@
 import auxiliaryData from "./auxiliaryData";
-import { typeOf } from "is-tools";
+import { typeOf } from "ismi-js-tools";
 import { BindParamsType, ParamType, SubOptionsType } from "./types";
 
 /**  Binding options, descriptions, and abbreviation

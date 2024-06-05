@@ -1,4 +1,4 @@
-import { t, Color, cursorMoveLeft } from "is-node-tools";
+import { t, Color, cursorMoveLeft } from "ismi-node-tools";
 import questionData from "./questionData";
 
 

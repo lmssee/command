@@ -1,5 +1,5 @@
 
-import { initializeFile } from "is-node-tools"
+import { initializeFile } from "ismi-node-tools"
 import { BindParamsType, StateType } from "./types";
 import auxiliaryData, { MyArg } from "./auxiliaryData";
 import bindInstruction from "./bindInstructions";
@@ -21,14 +21,14 @@ import showVersion from "./showVersion";
  *    _When you have multiple configuration items, you can use an array to group the configuration items that comply with the rules_
  *  - Simplified example
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command.bind("init <-i> (Initialize configuration file)").run();
  *      ``` 
  * - Simple configuration example 
  *      
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command.bind({
  *                      name: "init",
@@ -38,7 +38,7 @@ import showVersion from "./showVersion";
  *      ``` 
  *  - Example of carrying sub item configuration
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command
  *            .bind({
@@ -56,7 +56,7 @@ import showVersion from "./showVersion";
  * 
  *  - Example of carrying detailed configuration of sub items
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command
  *            .bind({
@@ -95,14 +95,14 @@ import showVersion from "./showVersion";
  *    **使用字符串参数时，注意 `<>` 和 `()` 均为英文符号**    
  *  - 最简单的例子
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command.bind("init <-i> (初始化一个配置文件)").run();
  *      ``` 
  * - 不带子项的配置 
  *      
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command.bind({
  *                      name: "init",
@@ -112,7 +112,7 @@ import showVersion from "./showVersion";
  *      ``` 
  *  - 带子项配置（子项纯文本的）
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command
  *            .bind({
@@ -130,7 +130,7 @@ import showVersion from "./showVersion";
  * 
  *  - 全配置的
  *      ```js 
- *        import { Args }  from "is-tl";
+ *        import { Args }  from "ismi-command";
  *        const  command : Args =  new Args();
  *        command
  *            .bind({

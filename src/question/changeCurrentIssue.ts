@@ -1,4 +1,4 @@
-import { typeOf } from "is-tools";
+import { typeOf } from "ismi-js-tools";
 import { ParamDataType, CurrentIssueType, DataType } from "./types";
 import { originalData } from "./questionData";
 

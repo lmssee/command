@@ -1,4 +1,4 @@
-import { Color, t } from "is-node-tools";
+import { Color, t } from "ismi-node-tools";
 import auxiliaryData from "./auxiliaryData";
 const _blank = "    ";
 /** organize help information
