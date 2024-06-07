@@ -31,8 +31,7 @@ function executeParsing() {
  * 执行冷冻数据
  */
 function beforeRun() {
-  const freezeO: string[] = ["name", "args", "abbr"];
-  freezeO.forEach(
+  ["name", "originBind", "abbr"].forEach(
     (currentEle: string) =>
       (auxiliaryData as any)[currentEle] &&
       Object.freeze((auxiliaryData as any)[currentEle]) &&

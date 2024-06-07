@@ -1,6 +1,6 @@
 import Args from "./argTool/args";
-import question from "./question/question";
 import selection from "./selection/selection";
+import question from "./question/question";
 
 /** 
  * This is a collection that inherits {@link Args} and integrates {@link question} and {@link selection}
@@ -8,13 +8,23 @@ import selection from "./selection/selection";
  * The initialization parameter is used to specify whether to overwrite when there are duplicate instructions
  *  
  *
- *  这是一个集合体，继承于 {@link Args}，又集成了 {@link question} 与 {@link selection}
+ * However, it is recommended to use {@link Command} instead of {@link question} or {@link selection}
+ * 
+ * Because {@link Command} automatically manages the order of calls, depending on individual usage habits
+ * 
+ * 
+ * 
+ * 这是一个集合体，继承于 {@link Args}，又集成了 {@link question} 与 {@link selection}
+ * 
+ *
+ * 但是，建议使用 {@link Command} 而不是 {@link question} 或 {@link selection} 
+ * 
+ * 因为 {@link Command} 会自动管理调用的顺序 ，这看个人使用习惯
  * 
   */
 class Command extends Args {
     constructor(name: string = "") {
         super(name);
-
         Object.defineProperties(this, {
             selection: {
                 value: selection,
@@ -51,7 +61,7 @@ class Command extends Args {
      * 
      * 该应用抽离于 `selection` , 可直接 `import  { selection } form  "ismi-command";`
      * 
-     * 
+     * data: ParamDataType, resultType?: "number" | "string"
      *  详细用法参见 ： {@link selection}
      * */
     selection = selection;
@@ -86,7 +96,5 @@ class Command extends Args {
 
     question = question;
 }
-
-const a = new Command();
 
 export default Command;

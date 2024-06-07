@@ -48,6 +48,7 @@ export type DataType = ParamDataType_ & {
   drawData: (string | undefined)[];
   /** 将给订参数放进这里 */
   assign: (_data: ParamDataType) => void;
+  reset: () => void
 };
 /** Parameter data type
  *

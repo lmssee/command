@@ -1,6 +1,6 @@
 {
   "name": "ismi-command",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
   "type": "module",
   "main": "out/index.cjs",
@@ -9,10 +9,11 @@
   "scripts": {
     "build": "npm run clear && npm run b",
     "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
-    "clear": "npx ismi r out types",
-    "clean": "npx ismi u-d && npx ismi r node_modules package-lock.json && npm install && npm run build",
-    "test": "rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369 ",
-    "up": "npx ismi u -n"
+    "clear": "npx ixxx r out types",
+    "clean": "npx ixxx u -d r node_modules package-lock.json && npm install && npm run build",
+    "diff": "npx ixxx  p -d",
+    "test": "cls && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369 ",
+    "up": "npx ixxx u -n"
   },
   "files": [
     "bin",
@@ -47,15 +48,15 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/node": "^20.14.0",
+    "@types/node": "^20.14.2",
     "javascript-obfuscator": "^4.1.0",
     "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-obfuscator": "^1.1.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "ismi-node-tools": "^0.0.0",
-    "ismi-js-tools": "^0.0.0"
+    "ismi-js-tools": "^0.0.0",
+    "ismi-node-tools": "^0.0.1"
   },
   "bin": {
     "ismi-command": "bin/ismi-command.js"

@@ -1,7 +1,7 @@
 
 import { initializeFile } from "ismi-node-tools"
 import { BindParamsType, StateType } from "./types";
-import auxiliaryData, { MyArg } from "./auxiliaryData";
+import auxiliaryData from "./auxiliaryData";
 import bindInstruction from "./bindInstructions";
 import executeParsing from "./executeParsing";
 import { organizeHelpInformation } from "./organizeHelpInformation";
@@ -188,7 +188,7 @@ class Args {
    *  - 1 `start`  刚开始，等待绑定
    *  - 2 `bind over`  执行绑定，等待执行
    *  - 3  `run over`  解析完毕
-   *   - 4 `over` 执行完毕，不建议在此命令后进行任何操作 
+   *  - 4 `over` 执行完毕，不建议在此命令后进行任何操作 
    * 
     */
 
@@ -272,12 +272,11 @@ class Args {
    * 
     */
   get args() {
-    const a: MyArg = new MyArg();
-    if (auxiliaryData.args)
-      auxiliaryData.args.forEach((currentE: any) => a.push(currentE));
-    return a;
+    return auxiliaryData.args
   }
+  set args(value) {
 
+  }
 
   /**
    *
@@ -289,14 +288,12 @@ class Args {
    */
   help(optionName?: string, subOptionName?: string) {
     if (typeof optionName == 'string' && auxiliaryData.originalBind[optionName]) {
-      if (typeof subOptionName == 'string' && auxiliaryData.originalBind[optionName].options && auxiliaryData.originalBind[optionName].options[subOptionName]) {
+      if (typeof subOptionName == 'string' && auxiliaryData.originalBind[optionName].options && auxiliaryData.originalBind[optionName].options[subOptionName])
         auxiliaryData.helpInfo = [optionName, subOptionName];
-      } else {
+      else
         auxiliaryData.helpInfo = optionName;
-      }
-    } else {
+    } else
       auxiliaryData.helpInfo = "help";
-    }
     organizeHelpInformation();
   }
 

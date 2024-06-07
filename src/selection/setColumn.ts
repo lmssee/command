@@ -12,11 +12,10 @@ export default function setColumns() {
     for (let i = 0; i < len; i++) {
         const element = data[i];
         let pushData;
-        if (typeof element == 'string') {
+        if (typeof element == 'string')
             pushData = element.length > screenLength ? element.slice(0, screenLength) : data[i];
-        } else if (typeof element == 'number') {
+        else if (typeof element == 'number')
             pushData = element % 1000000000000000
-        }
         drawData.push(pushData);
     }
 }

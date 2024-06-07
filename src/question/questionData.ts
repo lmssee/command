@@ -52,7 +52,8 @@ let data: DataType = {
         return originalData.progressCount || 0;
     },
     set progressCount(newValue: number) {
-        originalData.progressCount = newValue, changeCurrentIssue.call(this)
+        originalData.progressCount = newValue;
+        Reflect.apply(changeCurrentIssue, this, [])
     },
     /**  Buoy movement
      *
@@ -68,7 +69,7 @@ let data: DataType = {
     },
 
     set indexOfCursor(newValue: number) {
-        originalData.indexOfCursor = newValue, this.cursorTranslate = computeCodeCount.call(this);
+        originalData.indexOfCursor = newValue, this.cursorTranslate = Reflect.apply(computeCodeCount, this, []);
     },
 
     /**  current issue

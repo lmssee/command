@@ -26,7 +26,7 @@ export default {
     json(),
     typescript({}),
     // 打包压缩，自动去注释
-    terser(),
+    // terser(),
     // 可打包 json 内容
     // 去除无用代码
     cleanup(),
