@@ -23,6 +23,7 @@ export default function showVersion(auxiliaryData: AuxiliaryData): any {
     ".."
   );
 
+  /** 查找到对应的 package.json 文件 */
   while (fileExist(targetFilename)) {
     // console.log(fileExist(targetFilename));
 
@@ -32,15 +33,17 @@ export default function showVersion(auxiliaryData: AuxiliaryData): any {
     }
     const nestFilename = path.join(targetFilename, "..");
     // console.log(nestFilename);
+    // 未找到
     if (targetFilename == nestFilename) break;
     targetFilename = nestFilename;
   }
   const json = readFileToJsonSync(targetFilename);
   if (!json.name && !json.version)
     return console.log("抱歉，未找到版本定义说明");
+  const { platform } = process;
   console.log(
-    `您好，${Color.random(hostname())}：当前应用 (${Color.darkYellow(
+    `您好，${Color.random(hostname())}：应用 (${Color.darkYellow(
       json.name
-    )}) 的版本为 ${Color.red(json.version)}`
+    )}) 的当前版本为 ${Color.red(json.version)} for ${platform == 'win32' ? 'Windows' : platform == 'darwin' ? 'mac' : platform} ${Color.darkMagenta(arch())}`
   );
 }

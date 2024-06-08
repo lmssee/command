@@ -149,8 +149,6 @@ function get$map(value: any[]): $MapType {
  * 主要关注的是有序
  */
 function get$arrMap(value: any[]): [] | {}[] {
-  console.log(value);
-
   if (value.length == 0) return [];
   return value.map((currentElement: any) => {
     // 临时演员
@@ -158,9 +156,9 @@ function get$arrMap(value: any[]): [] | {}[] {
     // 临时演员
     const _temp: any = resultValue[currentElement.name] = {};
     // 判断当前是否有 value 属性
-    currentElement.value.length > 0 && (_temp.value = currentElement.value);
+    currentElement.value && currentElement.value.length > 0 && (_temp.value = currentElement.value);
     // 当前元素有子项
-    if (currentElement.options) currentElement.options.forEach((_currentEle: any) => _temp[_currentEle.name] = _currentEle.value);
+    if (currentElement.options && currentElement.options.length > 0) currentElement.options.forEach((_currentEle: any) => _temp[_currentEle.name] = _currentEle.value);
     return resultValue;
   });
 }

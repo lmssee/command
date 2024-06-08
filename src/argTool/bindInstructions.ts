@@ -37,6 +37,9 @@ export default function bindInstruction(data: BindParamsType, auxiliaryData: Aux
         */
         return data.forEach((currentEle: BindParamsType) => bindInstruction(currentEle, auxiliaryData));
     } else if (!data.name && !data.info) {
+        /** 
+         * 传入被认定为怪异模式
+          */
         const keys = Object.keys(data), _d_keys = Object.keys(_d);
         return keys.forEach((currentEle: string) => {
             if (!_d_keys.includes(currentEle)) {
