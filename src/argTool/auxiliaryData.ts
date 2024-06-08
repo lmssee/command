@@ -1,8 +1,13 @@
-import { ArgsType, StateType } from "./types";
+import { $arrMap, $map, ArgsType, StateType } from "./types";
 
 const originalArg: string[] = process.argv.slice(2);
 
-class AuxiliaryData {
+
+/** 定义数据中心 */
+export const auxiliaryData: { [key: symbol]: AuxiliaryData } = {};
+
+/** 定义类 */
+export class AuxiliaryData {
   originalArg = originalArg.slice();
   /** Command Name
    *
@@ -36,7 +41,7 @@ class AuxiliaryData {
    *
    * 启动的选项（处理后的用户输入）
    */
-  args: ArgsType = [];
+  args: ArgsType = new TempArgs();
   /** abbreviate table
    *
    *  缩写表
@@ -54,7 +59,27 @@ class AuxiliaryData {
   originalBind: any = {};
 }
 
-export default new Proxy(new AuxiliaryData(), {
+/** 仅作初始化用，其实这里直接返回不得了 */
+class TempArgs extends Array {
+  get $map(): $map {
+    return {};
+  };
+  get $arrMap(): $arrMap {
+    return []
+  };
+  get $only(): string[] | [] {
+    return []
+  }
+  get $original(): string[] | [] {
+    return []
+  }
+
+  get $isVoid(): boolean {
+    return false;
+  }
+}
+/** 因为要保持数据的独立性，所以应当是一个函数 */
+export const createAuxiliaryData = () => new Proxy(new AuxiliaryData(), {
   get(target: any, p, receive) {
     if (p == 'args') {
       const args = JSON.parse(JSON.stringify(target[Symbol.for('_args')]));
@@ -124,8 +149,6 @@ function get$map(value: any[]): $MapType {
  * 主要关注的是有序
  */
 function get$arrMap(value: any[]): [] | {}[] {
-  console.log(value);
-
   if (value.length == 0) return [];
   return value.map((currentElement: any) => {
     // 临时演员
@@ -133,9 +156,9 @@ function get$arrMap(value: any[]): [] | {}[] {
     // 临时演员
     const _temp: any = resultValue[currentElement.name] = {};
     // 判断当前是否有 value 属性
-    currentElement.value.length > 0 && (_temp.value = currentElement.value);
+    currentElement.value && currentElement.value.length > 0 && (_temp.value = currentElement.value);
     // 当前元素有子项
-    if (currentElement.options) currentElement.options.forEach((_currentEle: any) => _temp[_currentEle.name] = _currentEle.value);
+    if (currentElement.options && currentElement.options.length > 0) currentElement.options.forEach((_currentEle: any) => _temp[_currentEle.name] = _currentEle.value);
     return resultValue;
   });
 }

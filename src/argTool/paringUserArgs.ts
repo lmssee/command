@@ -1,5 +1,5 @@
+import { AuxiliaryData } from "./auxiliaryData";
 import showVersion from "./showVersion";
-import auxiliaryData from "./auxiliaryData";
 import { ManageDataType } from "./types";
 
 /** Parsing user parameters
@@ -23,7 +23,7 @@ import { ManageDataType } from "./types";
  * 
  * ```
  */
-export default function paringUserArgs(): any {
+export default function paringUserArgs(auxiliaryData:AuxiliaryData): any {
   // 用户没有传参数
   if (process.argv.length == 2) return;
   /** Get user input parameters
@@ -43,7 +43,7 @@ export default function paringUserArgs(): any {
    *
    *  命令中含有 -v 展示当前版本
    */
-  if (/\^-{1,2}v(ersion)?\^/i.test(_argString)) return showVersion();
+  if (/\^-{1,2}v(ersion)?\^/i.test(_argString)) return showVersion(auxiliaryData);
   if (_temporaryHelpIndex == 0) return (auxiliaryData.helpInfo = "help");
   let result: {
     name: string;
@@ -52,19 +52,19 @@ export default function paringUserArgs(): any {
   }[] = [];
   // 命令含有  -h
   if (_temporaryHelpIndex > 0) {
-    result = manageResult(_args.slice(0, _temporaryHelpIndex + 1));
-    auxiliaryData.args = result;
-
-    return (auxiliaryData.helpInfo =
+    result = manageResult(_args.slice(0, _temporaryHelpIndex + 1), auxiliaryData);
+    // 设定值
+    auxiliaryData.args = result as any;
+    auxiliaryData.helpInfo =
       result.length == 0
         ? "help"
         : result[0].options == undefined || result[0].options?.length == 0
           ? result[0].name
-          : [result[0].name, result[0].options[0].name]);
+          : [result[0].name, result[0].options[0].name];
+    return;
   }
   // 正常的解析
-  result = manageResult(_args);
-  auxiliaryData.args = result;
+  auxiliaryData.args = manageResult(_args, auxiliaryData);
 }
 
 /** 整理数据用到的数据 */
@@ -83,7 +83,7 @@ const manageData: ManageDataType = {
 };
 
 /** 参数整理函数 */
-function manageResult(data: string[]): any {
+function manageResult(data: string[], auxiliaryData: AuxiliaryData): any {
   // 解析每一个参数
   data.forEach((currentArg: string) => {
     const { name } = manageData;
@@ -96,26 +96,19 @@ function manageResult(data: string[]): any {
     // 参看该值是否能匹配上一级
     let temp1;
     /** 查看是否为全拼 */
-    if (auxiliaryData.originalBind[currentArg]) {
-      temp1 = currentArg;
-      /** 参看是否为缩写 */
-    } else if (auxiliaryData.abbr[currentArg]) {
-      temp1 = auxiliaryData.abbr[currentArg];
-    }
+    if (auxiliaryData.originalBind[currentArg]) temp1 = currentArg;
+    /** 参看是否为缩写 */
+    else if (auxiliaryData.abbr[currentArg]) temp1 = auxiliaryData.abbr[currentArg];
+
     /** 当尚未有匹配项时，检测是否有  */
     if (name !== "" && auxiliaryData.originalBind[name].options) {
       let temp2;
       /** 查看是否为 options 全拼  */
-      if (auxiliaryData.originalBind[name].options[currentArg]) {
-        temp2 = currentArg;
-        /** 参看是否为 options 的缩写 */
-      } else if (auxiliaryData.abbr[`${name}^${currentArg}`]) {
-        temp2 = auxiliaryData.abbr[`${name}^${currentArg}`];
-      }
+      if (auxiliaryData.originalBind[name].options[currentArg]) temp2 = currentArg;
+      /** 参看是否为 options 的缩写 */
+      else if (auxiliaryData.abbr[`${name}^${currentArg}`]) temp2 = auxiliaryData.abbr[`${name}^${currentArg}`];
       // 当有已匹配，先以检测子项为准
-      if (Boolean(temp2)) {
-        return dataIsOption(temp2);
-      }
+      if (Boolean(temp2)) return dataIsOption(temp2);
     }
     // 子项未匹配，再次检测是否为匹配项
     if (Boolean(temp1)) return dataIsCode(temp1);
@@ -143,10 +136,7 @@ function dataIsCode(name: string) {
 function dataIsOption(name: string) {
   const { item, object } = manageData;
   // 上一个子项值存在
-  if (item.name) {
-    if (item.value?.length == 0) delete item.value;
-    (object.options as any).push(item);
-  }
+  if (item.name) (object.options as any).push(item);
   manageData.resetItem(name);
 }
 
@@ -154,13 +144,8 @@ function dataIsOption(name: string) {
 function dataIsValue(value: string | boolean | number) {
   value = value == "true" ? true : value == "false" ? false : value == Number(value) ? Number(value) : value;
   if (manageData.name === "") return;
-  if (manageData.item.name) {
-    // @ts-ignore  当下一定有值，判断当下是否有子项
-    manageData.item.value.push(value);
-  } else {
-    // @ts-ignore 当下一定有值，添加到项
-    manageData.object.value?.push(value);
-  }
+  // @ts-ignore  当下一定有值，判断当下是否有子项
+  manageData[manageData.item.name ? 'item' : 'object'].value?.push(value)
 }
 
 // 将匹配追加到数据
@@ -169,17 +154,8 @@ function addResultItem() {
   const { name, object, item, result } = manageData;
   /** 数据为空 */
   if (name === "") return;
-  // 没有 value 值
-  if (object.value?.length == 0) delete object.value;
   // @ts-expect-error  若有子项将子项推进父项
   item.name && object.options?.push(item);
-  // // 整理子项列
-  // if (object.options?.length == 0) {
-  //   delete object.options;
-  // } else if (item.value?.length == 0) {
-  //   // 整理当前子项
-  //   delete item.value;
-  // }
   // 将数据推进结果
   result.push(JSON.parse(JSON.stringify(object)));
 }

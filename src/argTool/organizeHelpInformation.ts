@@ -1,11 +1,11 @@
 import { Color, t } from "ismi-node-tools";
-import auxiliaryData from "./auxiliaryData";
+import { AuxiliaryData } from "./auxiliaryData";
 const _blank = "    ";
 /** organize help information
  *
  *  整理帮助信息
  */
-export function organizeHelpInformation() {
+export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
   auxiliaryData.state = { code: 4, text: "over", overCode: "help" };
 
   /**
@@ -18,6 +18,7 @@ export function organizeHelpInformation() {
   ) {
     const data = auxiliaryData.originalBind[auxiliaryData.helpInfo as any];
     console.log(`${_blank}${data.name}${_blank}${Color.magenta(data.info)}\n`);
+    // 带子项的这里打印
     if (data.options && Object.keys(data.options).length > 0) {
       console.log(
         `${Color.darkYellow(`${_blank}use:`)}  ${auxiliaryData.name}   ${auxiliaryData.helpInfo
@@ -31,14 +32,15 @@ export function organizeHelpInformation() {
         }    [value]\n`
       );
     }
-  } else if (
+  } 
+  /**
+   *
+   * 某一 subOption
+   */
+  else if (
     Array.isArray(auxiliaryData.helpInfo) &&
     (auxiliaryData.helpInfo as string[]).length == 2
   ) {
-    /**
-     *
-     * 某一 subOption
-     */
     console.log(
       `${Color.cyan(" you can use:")}  ${auxiliaryData.name}   ${(
         auxiliaryData.helpInfo as []
@@ -47,11 +49,12 @@ export function organizeHelpInformation() {
       ].info
       } `
     );
-  } else {
-    /** Follow up on configuration help documents
-     *
-     * 配置帮助文档
-     */
+  }
+  /** Follow up on configuration help documents
+   *
+   * 配置帮助文档
+   */
+   else {
     console.log(
       `${Color.darkRed(" you can use:")}  ${auxiliaryData.name
       }  options/abbr  [subOptions/subAbbr  [value]]\n\n${Color.random(

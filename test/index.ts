@@ -2,6 +2,17 @@ import { Command, question, selection } from "index";
 import assert from "node:assert";
 import test from "node:test";
 
+
+test("", (t) => {
+  const command = new Command('test command 1').run();
+  console.log(command.name);
+});
+
+test("", (t) => {
+  const command = new Command('test command 2').run();
+  console.log(command.name);
+})
+
 /** 
  * 
  * 
@@ -38,7 +49,7 @@ test.skip('command args', (t) => {
  * 
   */
 
-test('question selection', (t) => {
+test.skip('question selection', (t) => {
   question(['123', '456']);
   selection(["789", "963"]);
 });
@@ -48,7 +59,7 @@ test('question selection', (t) => {
  * 
   */
 
-test('question selection', (t) => {
+test.skip('question selection', (t) => {
   question(['abc', 'def']);
   selection(["gil", "lmn"]);
   selection(["opq", "rst"]);

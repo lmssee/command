@@ -12,7 +12,7 @@
     "clear": "npx ixxx r out types",
     "clean": "npx ixxx u -d r node_modules package-lock.json && npm install && npm run build",
     "diff": "npx ixxx  p -d",
-    "test": "cls && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369 ",
+    "test": "cls && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369 -v",
     "up": "npx ixxx u -n"
   },
   "files": [

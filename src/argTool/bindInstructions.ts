@@ -1,6 +1,6 @@
-import auxiliaryData from "./auxiliaryData";
 import { typeOf } from "ismi-js-tools";
 import { BindParamsType, ParamType, SubOptionsType } from "./types";
+import { auxiliaryData as auData, AuxiliaryData } from "./auxiliaryData";
 
 /**  Binding options, descriptions, and abbreviation
    * 
@@ -11,7 +11,7 @@ import { BindParamsType, ParamType, SubOptionsType } from "./types";
    *        data {@link BindParamsType}  绑定命令行参数
    */
 
-export default function bindInstruction(data: BindParamsType): any {
+export default function bindInstruction(data: BindParamsType, auxiliaryData: AuxiliaryData): any {
     switch (auxiliaryData.state.code) {
         case 3: console.log('已经执行过 `run`'); return;
         case 4: console.log('已完成全部'); return;
@@ -29,16 +29,17 @@ export default function bindInstruction(data: BindParamsType): any {
      * 倘若使用字符串指定  */
     if (typeof data == 'string') {
         const [name, abbr, info] = parsingDataOfString(data);
-        return bindInstruction({ name, abbr, info });
+        return bindInstruction({ name, abbr, info }, auxiliaryData);
     } else if (Array.isArray(data)) {
         /** If the input parameter is an array
          *
          *   倘若为传入参数为数组
         */
-        return data.forEach((currentEle: BindParamsType) => {
-            return bindInstruction(currentEle);
-        });
+        return data.forEach((currentEle: BindParamsType) => bindInstruction(currentEle, auxiliaryData));
     } else if (!data.name && !data.info) {
+        /** 
+         * 传入被认定为怪异模式
+          */
         const keys = Object.keys(data), _d_keys = Object.keys(_d);
         return keys.forEach((currentEle: string) => {
             if (!_d_keys.includes(currentEle)) {
@@ -47,7 +48,7 @@ export default function bindInstruction(data: BindParamsType): any {
                 return bindInstruction({
                     name, info, abbr,
                     options: (data as { [key in string]?: any })[currentEle]
-                });
+                }, auxiliaryData);
             }
         });
     }
@@ -64,7 +65,7 @@ export default function bindInstruction(data: BindParamsType): any {
      *  倘若有子项
     */
     if (Array.isArray(_d.options)) {
-        _d.options = parsingSubOption(_d.options, _d.name) as any
+        _d.options = parsingSubOption(_d.options, _d.name, auxiliaryData) as any
     }
     auxiliaryData.originalBind[_d.name] = { ..._d };
 }
@@ -74,7 +75,7 @@ export default function bindInstruction(data: BindParamsType): any {
  * 
  * 解析子项
   */
-function parsingSubOption(data: any[], name: string): any {
+function parsingSubOption(data: any[], name: string, auxiliaryData: AuxiliaryData): any {
     const temporaryObject: any = {};
     data.forEach((currentEle: SubOptionsType) => {
         let _d = {

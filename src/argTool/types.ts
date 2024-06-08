@@ -128,9 +128,59 @@ type CurrentIssueType = {
   */
 export type StateType = { code: 1 | 2 | 3 | 4, text: 'start' | 'bind over' | 'run over' | 'over', overCode?: "version" | "help" };
 
-/** args type  */
-export type ArgsType = undefined | { name: string, value?: string[], options?: { name: string, value?: string[] }[] }[] | [];
+export type ArgsItem = { name: string, value?: string[], options?: { name: string, value?: string[] }[] };
 
+/** 返回 args 上 $map 类型声明 */
+export type $map = {} | { name: { [key: string]: string[] | [], value: string[] | [] } }
+
+/** 返回 args 上 $arrMap 类型 */
+export type $arrMap = ({} | { name: { [key: string]: string[] | [] } })[]
+
+/** 导出 arg 返回的 args 的类型   
+ * 
+ * 是一个继承于 {@link Array} 的对象，有属性
+ *  
+ * - $map      返回的是对象模式，用于配置文件比较好
+ * - $arrMap   以 $map 对象作为元素的数组, 适合有顺序的参数调用用
+ * - $only     仅包含头部的字符串数组
+ * - $original 原始的参数
+ * - $isVoid   是否为空 
+ * 
+ */
+export interface ArgsType extends Array<ArgsItem> {
+  /** 返回 map 模式的数据，用来做配置文件比较爽
+   * 
+   * ```ts
+   *   type $map = {} | {
+   *     name: {
+   *         [key: string]: string[] | [];
+   *         value: string[] | [];
+   *     };
+   * }
+   * ````
+  */
+  $map: $map
+  /** 
+   *
+   * ```ts
+   * type $arrMap = ({} | {
+   *    name: {
+   *       [key: string]: string[] | [];
+   *    };
+   *  })[]
+   * ``` 
+   * 
+    */
+  $arrMap: $arrMap
+  /** 仅有头部的字符串数组
+   * 
+   */
+  $only: string[] | []
+  /** 原始参数 */
+  $original: string[] | []
+  /** 是否为空 */
+  $isVoid: boolean
+};
 
 
 /** 子项的类型 */
