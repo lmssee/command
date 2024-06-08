@@ -1,8 +1,13 @@
-import { ArgsType, StateType } from "./types";
+import { $arrMap, $map, ArgsType, StateType } from "./types";
 
 const originalArg: string[] = process.argv.slice(2);
 
-class AuxiliaryData {
+
+/** 定义数据中心 */
+export const auxiliaryData: { [key: symbol]: AuxiliaryData } = {};
+
+/** 定义类 */
+export class AuxiliaryData {
   originalArg = originalArg.slice();
   /** Command Name
    *
@@ -36,7 +41,7 @@ class AuxiliaryData {
    *
    * 启动的选项（处理后的用户输入）
    */
-  args: ArgsType = [];
+  args: ArgsType = new TempArgs();
   /** abbreviate table
    *
    *  缩写表
@@ -54,7 +59,27 @@ class AuxiliaryData {
   originalBind: any = {};
 }
 
-export default new Proxy(new AuxiliaryData(), {
+/** 仅作初始化用，其实这里直接返回不得了 */
+class TempArgs extends Array {
+  get $map(): $map {
+    return {};
+  };
+  get $arrMap(): $arrMap {
+    return []
+  };
+  get $only(): string[] | [] {
+    return []
+  }
+  get $original(): string[] | [] {
+    return []
+  }
+
+  get $isVoid(): boolean {
+    return false;
+  }
+}
+/** 因为要保持数据的独立性，所以应当是一个函数 */
+export const createAuxiliaryData = () => new Proxy(new AuxiliaryData(), {
   get(target: any, p, receive) {
     if (p == 'args') {
       const args = JSON.parse(JSON.stringify(target[Symbol.for('_args')]));

@@ -1,14 +1,12 @@
-
 import { initializeFile } from "ismi-node-tools"
-import { BindParamsType, StateType } from "./types";
-import auxiliaryData from "./auxiliaryData";
+import { ArgsType, BindParamsType, StateType } from "./types";
+import { auxiliaryData, AuxiliaryData, createAuxiliaryData } from "./auxiliaryData";
 import bindInstruction from "./bindInstructions";
 import executeParsing from "./executeParsing";
 import { organizeHelpInformation } from "./organizeHelpInformation";
 import showVersion from "./showVersion";
 
-// 初始化文件路径
-[auxiliaryData.__filename,] = initializeFile();
+
 
 /**  Analyzing user input parameters         
  *   **_will only start working after calling `run`, and all `bind` must be completed before `run`_**
@@ -22,14 +20,14 @@ import showVersion from "./showVersion";
  *  - Simplified example
  *      ```js 
  *        import { Args }  from "ismi-command";
- *        const  command : Args =  new Args();
+ *        const  command : Args =  new Args('ixxx);
  *        command.bind("init <-i> (Initialize configuration file)").run();
  *      ``` 
  * - Simple configuration example 
  *      
  *      ```js 
  *        import { Args }  from "ismi-command";
- *        const  command : Args =  new Args();
+ *        const  command : Args =  new Args('ixxx);
  *        command.bind({
  *                      name: "init",
  *                      abbr: "-i",
@@ -157,6 +155,8 @@ import showVersion from "./showVersion";
  *
 */
 class Args {
+  // 为一只
+  uniKey: symbol;
   /**  
  * The initialization parameter is used to specify whether to overwrite when there are duplicate instructions
  *   
@@ -165,7 +165,22 @@ class Args {
  *  初始化的参数用于指定是否在有重复的指令时是否覆盖，默认不覆盖
  */
   constructor(name: string = "") {
-    auxiliaryData.name = name || process.argv.slice(1, 2)[0].replace(/.*\/.*?$/, "$1");
+    if (typeof name !== 'string') name = `${name}`;
+    this.uniKey = Symbol(name);
+    if (auxiliaryData[this.uniKey]) throw new Error(`${name} 已经存在，请更换初始化命令名称，若仍想在原命令上操作，请抽离为单独的文件做数据共享`);
+
+    // 初始化数据
+    auxiliaryData[this.uniKey] = createAuxiliaryData();
+    // 初始化文件路径
+    [auxiliaryData[this.uniKey].__filename,] = initializeFile();
+    auxiliaryData[this.uniKey].name = name || (typeof process.argv[1] == 'string' && process.argv.slice(1, 2)[0].replace(/.*\/.*?$/, "$1")) || '';
+    /** 禁止修改唯一值 */
+    Object.defineProperty(this, 'uniKey', {
+      value: this.uniKey,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
   };
 
   /** 
@@ -173,7 +188,7 @@ class Args {
    * 命令名称
     */
   get name(): string {
-    return auxiliaryData.name;
+    return auxiliaryData[this.uniKey].name;
   };
 
   /** current state
@@ -192,7 +207,7 @@ class Args {
    * 
     */
 
-  get state(): StateType { return auxiliaryData.state }
+  get state(): StateType { return auxiliaryData[this.uniKey].state }
 
   /**  over 
    * 
@@ -204,9 +219,11 @@ class Args {
     const _this = this;
     class My extends Boolean {
       constructor() {
-        super(auxiliaryData.state.code == 4)
+        super(auxiliaryData[_this.uniKey].state.code == 4)
       }
-
+      /** 倘若 isEnd 返回的是 true ，证明用户使用 -v 、-h 。默认回去展示它们
+       * 
+       * 此时若无其他操作，建议 end 一下 */
       get end() {
         if (this.valueOf()) _this.end;
         return true;
@@ -218,8 +235,10 @@ class Args {
 
   /** 
    *  直接结束当前进程  
+   * 
+   *  这是一个属性
    */
-  get end() {
+  get end(): true {
     process.exit()
     return true
   }
@@ -252,7 +271,7 @@ class Args {
    * 
    */
   bind(data: BindParamsType): any {
-    bindInstruction(data);
+    bindInstruction(data, auxiliaryData[this.uniKey]);
     return this;
   }
 
@@ -261,7 +280,7 @@ class Args {
    *  开始执行回调
   */
   run() {
-    executeParsing();
+    executeParsing(auxiliaryData[this.uniKey]);
     return this;
   }
 
@@ -270,14 +289,18 @@ class Args {
    * 
    * 获取有序的参数
    * 
-    */
-  get args() {
-    return auxiliaryData.args
+ * 是一个继承于 {@link Array} 的对象，有属性
+ *  
+ * - $map      返回的是对象模式，用于配置文件比较好
+ * - $arrMap   以 $map 对象作为元素的数组, 适合有顺序的参数调用用
+ * - $only     仅包含头部的字符串数组
+ * - $original 原始的参数
+ * - $isVoid   是否为空 
+ * 
+ */
+  get args(): ArgsType {
+    return auxiliaryData[this.uniKey].args
   }
-  set args(value) {
-
-  }
-
   /**
    *
    * 用户可主动调用该方法在用户参数没有包含 -h 的时候展示帮助文档
@@ -287,14 +310,15 @@ class Args {
    * @memberof Args
    */
   help(optionName?: string, subOptionName?: string) {
-    if (typeof optionName == 'string' && auxiliaryData.originalBind[optionName]) {
-      if (typeof subOptionName == 'string' && auxiliaryData.originalBind[optionName].options && auxiliaryData.originalBind[optionName].options[subOptionName])
-        auxiliaryData.helpInfo = [optionName, subOptionName];
+    const _auxiliaryData = auxiliaryData[this.uniKey]
+    if (typeof optionName == 'string' && _auxiliaryData.originalBind[optionName]) {
+      if (typeof subOptionName == 'string' && _auxiliaryData.originalBind[optionName].options && _auxiliaryData.originalBind[optionName].options[subOptionName])
+        _auxiliaryData.helpInfo = [optionName, subOptionName];
       else
-        auxiliaryData.helpInfo = optionName;
+        _auxiliaryData.helpInfo = optionName;
     } else
-      auxiliaryData.helpInfo = "help";
-    organizeHelpInformation();
+      _auxiliaryData.helpInfo = "help";
+    organizeHelpInformation(auxiliaryData[this.uniKey]);
   }
 
 
@@ -305,7 +329,7 @@ class Args {
    * @memberof Args
    */
   version() {
-    showVersion();
+    showVersion(auxiliaryData[this.uniKey]);
   }
 
 }

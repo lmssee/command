@@ -1,11 +1,11 @@
 import { Color, t } from "ismi-node-tools";
-import auxiliaryData from "./auxiliaryData";
+import { AuxiliaryData } from "./auxiliaryData";
 const _blank = "    ";
 /** organize help information
  *
  *  整理帮助信息
  */
-export function organizeHelpInformation() {
+export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
   auxiliaryData.state = { code: 4, text: "over", overCode: "help" };
 
   /**

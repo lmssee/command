@@ -55,13 +55,13 @@ _When you have multiple configuration items, you can use an array to group the c
 - Simplified example
   ```js
   import { Args } from "ismi-command";
-  const command: Args = new Args();
+  const command: Args = new Args("ixxx");
   command.bind("init <-i> (Initialize configuration file)").run();
   ```
 - Simple configuration example
   ```js
   import { Args } from "ismi-command";
-  const command: Args = new Args();
+  const command: Args = new Args("ixxx");
   command
     .bind({
       name: "init",
@@ -74,7 +74,7 @@ _When you have multiple configuration items, you can use an array to group the c
 
 ```js
 import { Args } from "ismi-command";
-const command: Args = new Args();
+const command: Args = new Args("ixxx");
 command.bind({
   name: "init",
   abbr: "-i",
@@ -92,7 +92,7 @@ command.run(); // Users can use `gig init -o`
 
 ```js
 import { Args } from "ismi-command";
-const command: Args = new Args();
+const command: Args = new Args('ixxx');
 command.bind({
   name: "init",
   abbr: "-i",
@@ -122,7 +122,7 @@ command.run(); // Users can use `gig init -o`
 
 ```ts
 import { Args } from "ismi-command";
-const command: Args = new Args();
+const command: Args = new Args('ixxx');
 command.bind({
   "init <-i> (Initialize project)": [
     "ts  (Initialize a ts configuration file)",
@@ -160,7 +160,7 @@ command.run(); // Users can use `gig init ts`
     command.args.$map;
     /**
      * For the convenience of obtaining ordered object pattern data
-     * 
+     *
      *  this has been added
      *
      */

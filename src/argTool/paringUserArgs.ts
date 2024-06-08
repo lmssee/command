@@ -1,5 +1,5 @@
+import { AuxiliaryData } from "./auxiliaryData";
 import showVersion from "./showVersion";
-import auxiliaryData from "./auxiliaryData";
 import { ManageDataType } from "./types";
 
 /** Parsing user parameters
@@ -23,7 +23,7 @@ import { ManageDataType } from "./types";
  * 
  * ```
  */
-export default function paringUserArgs(): any {
+export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
   // 用户没有传参数
   if (process.argv.length == 2) return;
   /** Get user input parameters
@@ -43,7 +43,7 @@ export default function paringUserArgs(): any {
    *
    *  命令中含有 -v 展示当前版本
    */
-  if (/\^-{1,2}v(ersion)?\^/i.test(_argString)) return showVersion();
+  if (/\^-{1,2}v(ersion)?\^/i.test(_argString)) return showVersion(auxiliaryData);
   if (_temporaryHelpIndex == 0) return (auxiliaryData.helpInfo = "help");
   let result: {
     name: string;
@@ -52,9 +52,8 @@ export default function paringUserArgs(): any {
   }[] = [];
   // 命令含有  -h
   if (_temporaryHelpIndex > 0) {
-    result = manageResult(_args.slice(0, _temporaryHelpIndex + 1));
-    auxiliaryData.args = result;
-
+    result = manageResult(_args.slice(0, _temporaryHelpIndex + 1), auxiliaryData);
+    auxiliaryData.args = result as any;
     return (auxiliaryData.helpInfo =
       result.length == 0
         ? "help"
@@ -63,8 +62,8 @@ export default function paringUserArgs(): any {
           : [result[0].name, result[0].options[0].name]);
   }
   // 正常的解析
-  result = manageResult(_args);
-  auxiliaryData.args = result;
+  result = manageResult(_args, auxiliaryData);
+  auxiliaryData.args = result as any;
 }
 
 /** 整理数据用到的数据 */
@@ -83,7 +82,7 @@ const manageData: ManageDataType = {
 };
 
 /** 参数整理函数 */
-function manageResult(data: string[]): any {
+function manageResult(data: string[], auxiliaryData: AuxiliaryData): any {
   // 解析每一个参数
   data.forEach((currentArg: string) => {
     const { name } = manageData;

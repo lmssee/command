@@ -12,10 +12,10 @@ import {
   readFileToJsonSync,
 } from "ismi-node-tools";
 import { arch, hostname } from "node:os";
-import auxiliaryData from "./auxiliaryData";
+import { AuxiliaryData } from "./auxiliaryData";
 
 
-export default function showVersion(): any {
+export default function showVersion(auxiliaryData: AuxiliaryData): any {
   auxiliaryData.state = { code: 4, text: "over", overCode: "version" };
   // 目标文件位置
   let targetFilename = path.join(
