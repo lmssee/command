@@ -1,6 +1,6 @@
 {
   "name": "ismi-command",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
   "type": "module",
   "main": "out/index.cjs",
