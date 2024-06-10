@@ -33,10 +33,11 @@ export default async function (
   await userSelect();
   // 移除监听
   process.removeListener("exit", unexpectedExit);
+  const resultString = selectionData.data[selectionData.select], resultNumber = selectionData.select;
   // 重置数据
   selectionData.reset();
   // 返回结果
   return resultType == "string"
-    ? selectionData.data[selectionData.select]
-    : selectionData.select;
+    ? resultString
+    : resultNumber;
 }
