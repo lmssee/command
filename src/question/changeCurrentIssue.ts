@@ -1,6 +1,6 @@
 import { typeOf } from "ismi-js-tools";
 import { ParamDataType, CurrentIssueType, DataType } from "./types";
-import { originalData } from "./questionData";
+import questionData, { originalData } from "./questionData";
 
 /**Change the current issue (Every change initializes the `questionData.data`)
   * 
@@ -8,10 +8,9 @@ import { originalData } from "./questionData";
   *  
   *  @param data {@link ParamDataType}
   **/
-export default function () {
-    // @ts-ignore
-    const _this: DataType = this;
-    const { multi, progressCount } = _this;
+export default function changeCurrentIssue() {
+    // const _this: DataType = this as DataType;
+    const { multi, progressCount } = questionData;
     // 原始问题
     let _d: string | CurrentIssueType = multi ? (originalData.data as [])[(originalData.data as []).length + progressCount] : originalData.data as string,
         // 初始化一个空白问题
@@ -20,7 +19,7 @@ export default function () {
         currentIssue: CurrentIssueType = Object.assign(_e, typeOf(_d) == "string" ? { text: _d } : _d),
         type: (0 | 1) = Array.isArray(currentIssue.tip) ? 1 : 0;
 
-    _this.assign({
+    questionData.assign({
         indexOfCursor: 0,
         cursorTranslate: 0,
         type,

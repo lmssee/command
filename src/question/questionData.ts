@@ -110,10 +110,9 @@ let data: DataType = {
      */
     results: [],
 
-    assign(arg: any): void {
-        Object.keys(arg).forEach((currentKey: string) => {
-            // @ts-ignore
-            if (this[currentKey] != undefined) this[currentKey] = arg[currentKey];
+    assign(_data: any): void {
+        Object.keys(_data).forEach((currentKey: any) => {
+            if ((this as any)[currentKey] != undefined) (this as any)[currentKey] = _data[currentKey];
         })
     },
 };

@@ -16,10 +16,10 @@ export default function (keyValue: any = undefined) {
     for (let i = 0; i < len; i++) {
         stdout.write(`${t}7h`);
         if (i == select) {
-            const color = (i + 5) % 7;
+            const color = (i + 5) % 6 + 1;
             stdout.write(`  ${t}6;5;3${color}m>${t}m   ${drawData[i]}${t}m     ${t}5;3${color}m<${t}m\n`);
         } else {
-            const color = (i + 1) % 7;
+            const color = (i + 1) % 6 + 1;
             stdout.write(`      ${t}3${color}m${drawData[i]}${t}m\n`);
         }
     }

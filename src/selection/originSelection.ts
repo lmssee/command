@@ -16,9 +16,16 @@ export default async function (
   data: ParamDataType,
   resultType: "number" | "string" = "string"
 ) {
+  selectionData.reset();
 
-  (Array.isArray(data) && (selectionData.data = [...data])) ||
-    selectionData.assign(data);
+  console.log(data);
+  try {
+    (Array.isArray(data) && (selectionData.data = [...data])) || selectionData.assign(data);
+
+  } catch (error) {
+    console.log(error);
+
+  }
   // const len = selectionData.data.length; // Get the number of options  // 获取选项长
 
   process.on("exit", unexpectedExit), cursorHide(), draw();

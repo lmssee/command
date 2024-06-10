@@ -14,10 +14,9 @@ const data: DataType = {
   preview,
   private: privateValue,
   data: [],
-  assign(_data: ParamDataType) {
-    Object.keys(_data).forEach((currentKey: string) => {
-      // @ts-ignore
-      if (this[currentKey] != undefined) this[currentKey] = arg[currentKey];
+  assign(params: ParamDataType) {
+    Object.keys(params).forEach((currentKey: any) => {
+      if ((this as any)[currentKey] != undefined) (this as any)[currentKey] = (params as any)[currentKey];
     });
   },
   reset() {
