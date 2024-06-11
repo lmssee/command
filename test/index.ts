@@ -3,6 +3,12 @@ import assert from "node:assert";
 import test from "node:test";
 import testQuestion from './testQuestion';
 import testSelection from './testSelection';
+import { readInput } from "ismi-node-tools";
+
+await readInput(() => {
+  // throw Error("主动的");
+  return true;
+});
 testQuestion();
 testSelection();
 
