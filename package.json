@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "name": "ismi-command",
   "main": "exportCjs/index.cjs",
   "module": "exportMjs/index.mjs",

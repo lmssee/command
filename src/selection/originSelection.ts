@@ -17,15 +17,7 @@ export default async function (
   resultType: "number" | "string" = "string"
 ) {
   selectionData.reset();
-
-  console.log(data);
-  try {
-    (Array.isArray(data) && (selectionData.data = [...data])) || selectionData.assign(data);
-
-  } catch (error) {
-    console.log(error);
-
-  }
+  (Array.isArray(data) && (selectionData.data = [...data])) || selectionData.assign(data);
   // const len = selectionData.data.length; // Get the number of options  // 获取选项长
 
   process.on("exit", unexpectedExit), cursorHide(), draw();
