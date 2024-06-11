@@ -82,7 +82,7 @@ class TempArgs extends Array {
 export const createAuxiliaryData = () => new Proxy(new AuxiliaryData(), {
   get(target: any, p, receive) {
     if (p == 'args') {
-      const args = JSON.parse(JSON.stringify(target[Symbol.for('_args')]));
+      const args = JSON.parse(JSON.stringify(target[Symbol.for('_args')] || {}));
       return new Proxy(args, {
         get(_target, _p, _receiver) {
           if (_p == '$map') return get$map(args);
