@@ -1,16 +1,22 @@
 import { Command, question, selection } from "index";
 import assert from "node:assert";
 import test from "node:test";
+import testQuestion from './testQuestion';
+import testSelection from './testSelection';
+import { readInput } from "ismi-node-tools";
 
-
-test("", (t) => {
-  const command = new Command('test command 1').run();
-  console.log(command.name);
+await readInput(() => {
+  // throw Error("主动的");
+  return true;
 });
+testQuestion();
+testSelection();
 
-test("", (t) => {
-  const command = new Command('test command 2').run();
-  console.log(command.name);
+/** 简单测试数据是否覆盖的问题 */
+test.skip("test command data store", (t) => {
+  const command_1 = new Command('test command 1').run();
+  const command_2 = new Command('test command 2').run();
+  console.log(command_1.name, command_2.name);
 })
 
 /** 

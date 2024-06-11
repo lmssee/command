@@ -23,7 +23,7 @@ import { ManageDataType } from "./types";
  * 
  * ```
  */
-export default function paringUserArgs(auxiliaryData:AuxiliaryData): any {
+export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
   // 用户没有传参数
   if (process.argv.length == 2) return;
   /** Get user input parameters
@@ -144,8 +144,8 @@ function dataIsOption(name: string) {
 function dataIsValue(value: string | boolean | number) {
   value = value == "true" ? true : value == "false" ? false : value == Number(value) ? Number(value) : value;
   if (manageData.name === "") return;
-  // @ts-ignore  当下一定有值，判断当下是否有子项
-  manageData[manageData.item.name ? 'item' : 'object'].value?.push(value)
+  //   当下一定有值，判断当下是否有子项
+  (manageData[manageData.item.name ? 'item' : 'object'].value as (string | boolean | number)[]).push(value)
 }
 
 // 将匹配追加到数据

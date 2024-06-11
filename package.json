@@ -1,25 +1,38 @@
 {
-  "name": "ismi-command",
-  "version": "0.0.2",
-  "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
   "type": "module",
-  "main": "out/index.cjs",
-  "module": "out/index.mjs",
-  "typings": "types/index.d.ts",
+  "version": "0.0.4",
+  "name": "ismi-command",
+  "main": "exportCjs/index.cjs",
+  "module": "exportMjs/index.mjs",
+  "typings": "exportTypes/index.d.ts",
+  "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
+  "files": [
+    "exportBin",
+    "exportMjs",
+    "exportCjs",
+    "exportTypes"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./exportMjs/index.mjs",
+        "types": "./exportTypes/index.d.ts"
+      },
+      "require": {
+        "default": "./exportCjs/index.cjs",
+        "types": "./exportTypes/index.d.ts"
+      }
+    }
+  },
   "scripts": {
     "build": "npm run clear && npm run b",
     "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
     "clear": "npx ixxx r out types",
     "clean": "npx ixxx u -d r node_modules package-lock.json && npm install && npm run build",
     "diff": "npx ixxx  p -d",
-    "test": "cls && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369 -v",
+    "test": "cls && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369",
     "up": "npx ixxx u -n"
   },
-  "files": [
-    "bin",
-    "out",
-    "types"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lmssee/command.git"
@@ -27,11 +40,12 @@
   "author": "lmssee <lmssee@outlook.com>  (https://lmssee.com)",
   "license": "ISC",
   "keywords": [
-    "lmssee",
     "letmiseesee",
-    "command",
-    "ismi",
+    "lmssee",
     "is-mi",
+    "ismi",
+    "command",
+    "ismi-command",
     "is-mi-command"
   ],
   "homepage": "https://lmssee.github.io/command",
@@ -43,22 +57,23 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.8",
-    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/node": "^20.14.2",
+    "rollup-plugin-obfuscator": "^1.1.0",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-terser": "^0.4.4",
     "javascript-obfuscator": "^4.1.0",
     "rollup-plugin-cleanup": "^3.2.1",
-    "rollup-plugin-obfuscator": "^1.1.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@types/node": "^20.14.2",
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "ismi-js-tools": "^0.0.0",
-    "ismi-node-tools": "^0.0.1"
+    "ismi-js-tools": "^0.0.2",
+    "ismi-node-tools": "^0.0.3"
   },
   "bin": {
-    "ismi-command": "bin/ismi-command.js"
+    "ismi-command": "exportBin/index.js",
+    "cmd": "exportBin/index.js"
   }
 }
