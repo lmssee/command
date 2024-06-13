@@ -70,7 +70,7 @@
   },
   "dependencies": {
     "ismi-js-tools": "^0.0.2",
-    "ismi-node-tools": "^0.0.3"
+    "ismi-node-tools": "^0.0.4"
   },
   "bin": {
     "ismi-command": "exportBin/index.js",
