@@ -1,6 +1,6 @@
-import { Color, cursorShow, readInput, t } from "ismi-node-tools";
-import draw from "./draw";
-import selectionData from "./selectionData";
+import { Color, cursorShow, readInput, t } from 'ismi-node-tools';
+import draw from './draw';
+import selectionData from './selectionData';
 /**
  *
  * 用户选择
@@ -12,19 +12,19 @@ export default async function () {
   await readInput((keyValue: string | undefined, key: any) => {
     const { select } = selectionData;
     switch (key.name) {
-      case "return":
+      case 'return':
         cursorShow();
         process.stdout.write(`${t}1A${t}J`);
         !selectionData.private &&
           process.stdout.write(
-            `👌 ${resultText || info}: ${Color.random(data[select])}\n`
+            `👌 ${resultText || info}: ${Color.random(data[select])}\n`,
           );
         return true;
-      case "up":
+      case 'up':
         selectionData.select = select == 0 ? len - 1 : select - 1;
         draw(keyValue);
         break;
-      case "down":
+      case 'down':
         selectionData.select = select == len - 1 ? 0 : select + 1;
         draw(keyValue);
         break;

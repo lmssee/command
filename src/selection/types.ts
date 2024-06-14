@@ -1,4 +1,5 @@
-type ParamDataType_ = {
+/** 参数数据对象型类型  */
+export type SelectionParamDataMapType = {
   /** Selected data to be rendered
    *
    * 要渲染的选择的数据数据
@@ -35,7 +36,7 @@ type ParamDataType_ = {
  *
  * 数据类型
  **/
-export type DataType = ParamDataType_ & {
+export type DataType = SelectionParamDataMapType & {
   /** Current selection
    *
    * 当前选择项
@@ -47,11 +48,11 @@ export type DataType = ParamDataType_ & {
    */
   drawData: (string | undefined)[];
   /** 将给订参数放进这里 */
-  assign: (_data: ParamDataType) => void;
-  reset: () => void
+  assign: (_data: SelectionParamDataType) => void;
+  reset: () => void;
 };
 /** Parameter data type
  *
  * 参数数据类型
  **/
-export type ParamDataType = any[] | ParamDataType_;
+export type SelectionParamDataType = any[] | SelectionParamDataMapType;

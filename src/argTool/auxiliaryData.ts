@@ -1,4 +1,4 @@
-import { $arrMap, $map, ArgsType, StateType } from "./types";
+import { $arrMap, $map, ArgsType, StateType } from './types';
 
 const originalArg: string[] = process.argv.slice(2);
 
@@ -12,12 +12,12 @@ export class AuxiliaryData {
    *
    * 命令名称
    */
-  name: string = "";
+  name: string = '';
   /** File name
    *
    * 文件目录
    */
-  __filename: string = "";
+  __filename: string = '';
   /** current state
    *
    *   - 1 `start`  At the beginning, waiting for binding
@@ -34,7 +34,7 @@ export class AuxiliaryData {
    *
    */
 
-  state: StateType = { code: 1, text: "start" };
+  state: StateType = { code: 1, text: 'start' };
 
   /** Startup options (processed user input)
    *
@@ -50,7 +50,7 @@ export class AuxiliaryData {
    *
    *  帮助文档
    */
-  helpInfo: string | string[] = "";
+  helpInfo: string | string[] = '';
   /**
    *
    * 原始参数
@@ -81,21 +81,21 @@ class TempArgs extends Array {
 export const createAuxiliaryData = () =>
   new Proxy(new AuxiliaryData(), {
     get(target: any, p, receive) {
-      if (p == "args") {
+      if (p == 'args') {
         const args = JSON.parse(
-          JSON.stringify(target[Symbol.for("_args")] || [])
+          JSON.stringify(target[Symbol.for('_args')] || []),
         );
         return new Proxy(args, {
           get(_target, _p, _receiver) {
-            if (_p == "$map") return get$map(args);
-            if (_p == "$arrMap") return get$arrMap(args);
-            if (_p == "$only")
+            if (_p == '$map') return get$map(args);
+            if (_p == '$arrMap') return get$arrMap(args);
+            if (_p == '$only')
               return args.map(
-                (currentEle: { name: string }) => currentEle.name
+                (currentEle: { name: string }) => currentEle.name,
               );
-            if (_p == "$original") return originalArg.slice();
-            if (_p == "$isVoid") return originalArg.slice().length == 0;
-            return "hello world";
+            if (_p == '$original') return originalArg.slice();
+            if (_p == '$isVoid') return originalArg.slice().length == 0;
+            return 'hello world';
           },
           set(_target, _p, _newValue, _receive) {
             Reflect.set(_target, _p, _newValue, _receive);
@@ -106,8 +106,8 @@ export const createAuxiliaryData = () =>
       return Reflect.get(target, p, receive);
     },
     set(target: any, p, newValue, receiver) {
-      if (p == "args") {
-        target[Symbol.for("_args")] = newValue;
+      if (p == 'args') {
+        target[Symbol.for('_args')] = newValue;
       } else Reflect.set(target, p, newValue, receiver);
       return true;
     },
@@ -145,7 +145,7 @@ function get$map(value: any[]): $MapType {
           (_temp[_currentEle.name] =
             valueIsExist && _temp[_currentEle.name] !== undefined
               ? _temp[_currentEle.name].concat(_currentEle.value)
-              : _currentEle.value)
+              : _currentEle.value),
       );
     }
     resultValue[currentElement.name] = _temp;
@@ -173,7 +173,7 @@ function get$arrMap(value: any[]): [] | {}[] {
     // 当前元素有子项
     if (currentElement.options && currentElement.options.length > 0)
       currentElement.options.forEach(
-        (_currentEle: any) => (_temp[_currentEle.name] = _currentEle.value)
+        (_currentEle: any) => (_temp[_currentEle.name] = _currentEle.value),
       );
     return resultValue;
   });

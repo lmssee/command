@@ -18,7 +18,7 @@ npm install   ismi-command  --save
 ## use
 
 ```js
-import Command from "ismi-command";
+import Command from 'ismi-command';
 ```
 
 ### Command section
@@ -121,18 +121,18 @@ command.run(); // Users can use `gig init -o`
 - Strange behavior binding parameters:
 
 ```ts
-import { Args } from "ismi-command";
+import { Args } from 'ismi-command';
 const command: Args = new Args('ixxx');
 command.bind({
-  "init <-i> (Initialize project)": [
-    "ts  (Initialize a ts configuration file)",
-    "js  (Initialize a js configuration file)",
-    "json  (Initialize a json configuration file)",
+  'init <-i> (Initialize project)': [
+    'ts  (Initialize a ts configuration file)',
+    'js  (Initialize a js configuration file)',
+    'json  (Initialize a json configuration file)',
   ],
-  "create <-c> (Add a file)": [
-    "ts  (add a ts  file)",
-    "js  (add a js file)",
-    "json  (add a  json file)",
+  'create <-c> (Add a file)': [
+    'ts  (add a ts  file)',
+    'js  (add a js file)',
+    'json  (add a  json file)',
   ],
 });
 command.run(); // Users can use `gig init ts`
@@ -218,8 +218,8 @@ Now you can actively display help documents by calling the `help` method
 
 ```ts
 command.help();
-command.help("init"); // Display init command
-command.help("init", "vue"); // Display vue command information under init
+command.help('init'); // Display init command
+command.help('init', 'vue'); // Display vue command information under init
 ```
 
 #### Proactively using version instructions
@@ -240,30 +240,30 @@ _A function waiting for user input. Because it needs to wait, it is asynchronous
 The simplest use :
 
 ```js
-import { question } from "ismi-command";
-const result = await question("What do you want for lunch");
+import { question } from 'ismi-command';
+const result = await question('What do you want for lunch');
 ```
 
 Using custom configurations can provide users with a better experience.
 
 ```js
-import { question } from "ismi-command";
+import { question } from 'ismi-command';
 const result = await question({
-  text: "What do you want for lunch",
-  tip: "Hamburg or Italian pasta",
-  type: "text",
+  text: 'What do you want for lunch',
+  tip: 'Hamburg or Italian pasta',
+  type: 'text',
 });
 ```
 
 You can also configure 'tip' as an array and configure Q&A as a simple selection.At this point, users can only choose from the values provided by 'tip' **Only suitable for simple selection, such as' yes' or 'no' or 'male' or 'female' options with more words, it is recommended to use [selection] (# selection - section - selection mode -)**
 
 ```js
-import { question } from "ismi-command";
+import { question } from 'ismi-command';
 
 const result = await question({
-  text: "What do you want for lunch", // Required parameters
-  tip: ["Hamburg ", " Italian pasta"], // Optional parameter, enter selection mode when it is an array
-  type: "text", //A type selection that supports `text` and `password`,Optional parameter, default : `text``
+  text: 'What do you want for lunch', // Required parameters
+  tip: ['Hamburg ', ' Italian pasta'], // Optional parameter, enter selection mode when it is an array
+  type: 'text', //A type selection that supports `text` and `password`,Optional parameter, default : `text``
   private: false, // Overwrite after input,Optional parameter,,default: `false`
   resultText: "Okay, then let's go eat", // Optional parameter,of  result display
 });
@@ -272,19 +272,19 @@ const result = await question({
 Multiple questions can also be provided at once, just place them in an array (array and object patterns can be mixed and matched)
 
 ```js
-import { question } from "ismi-command";
+import { question } from 'ismi-command';
 
 const result = await question([
   {
-    text: "What do you want for lunch",
-    tip: ["Hamburg ", "Italian pasta"],
+    text: 'What do you want for lunch',
+    tip: ['Hamburg ', 'Italian pasta'],
     resultText: "Okay, then let's go eat",
   },
   {
-    text: "What`s your favorite dessert",
+    text: 'What`s your favorite dessert',
     private: true,
   },
-  "Where to play after dinner",
+  'Where to play after dinner',
 ]);
 ```
 
@@ -298,14 +298,14 @@ _A function waiting for user input. Because it needs to wait, it is asynchronous
 The simplest use :
 
 ```js
-import { selection } from "ismi-command";
-console.log("What do you want for lunch");
+import { selection } from 'ismi-command';
+console.log('What do you want for lunch');
 const result = await selection([
-  "Hamburg",
-  "Italian pasta",
-  "steak",
-  "pizza",
-  "chafing dish",
+  'Hamburg',
+  'Italian pasta',
+  'steak',
+  'pizza',
+  'chafing dish',
 ]);
 ```
 

@@ -1,6 +1,6 @@
-import { AuxiliaryData } from "./auxiliaryData";
-import showVersion from "./showVersion";
-import { ManageDataType } from "./types";
+import { AuxiliaryData } from './auxiliaryData';
+import showVersion from './showVersion';
+import { ManageDataType } from './types';
 
 /** Parsing user parameters
  *
@@ -31,13 +31,13 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
    * 获取用户输入参数
    */
   const _args = auxiliaryData.originalArg,
-    _argString = `^${_args.join("^")}^`;
+    _argString = `^${_args.join('^')}^`;
   /**  Check if there is a requirement help document included
    *
    * 检测是否含有需求帮助文档
    */
   const _temporaryHelpIndex = _args.findIndex((currentArg: string) =>
-    /^-{1,2}h(elp)?$/.test(currentArg)
+    /^-{1,2}h(elp)?$/.test(currentArg),
   );
   /**
    *
@@ -45,7 +45,7 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
    */
   if (/\^-{1,2}v(ersion)?\^/i.test(_argString))
     return showVersion(auxiliaryData);
-  if (_temporaryHelpIndex == 0) return (auxiliaryData.helpInfo = "help");
+  if (_temporaryHelpIndex == 0) return (auxiliaryData.helpInfo = 'help');
   let result: {
     name: string;
     value?: string[];
@@ -58,10 +58,10 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
     auxiliaryData.args = manageData.result as any;
     auxiliaryData.helpInfo =
       result.length == 0
-        ? "help"
+        ? 'help'
         : result[0].options == undefined || result[0].options?.length == 0
-        ? result[0].name
-        : [result[0].name, result[0].options[0].name];
+          ? result[0].name
+          : [result[0].name, result[0].options[0].name];
     return;
   }
   manageResult(_args, auxiliaryData);
@@ -72,9 +72,9 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
 /** 整理数据用到的数据 */
 const manageData: ManageDataType = {
   result: [],
-  name: "",
-  object: { name: "", value: [], options: [] },
-  item: { name: "", value: [] },
+  name: '',
+  object: { name: '', value: [], options: [] },
+  item: { name: '', value: [] },
   resetObject(name) {
     this.name = name;
     this.object = { name, value: [], options: [] };
@@ -103,7 +103,7 @@ function manageResult(data: string[], auxiliaryData: AuxiliaryData): void {
       temp1 = auxiliaryData.abbr[currentArg];
 
     /** 当尚未有匹配项时，检测是否有  */
-    if (name !== "" && auxiliaryData.originalBind[name].options) {
+    if (name !== '' && auxiliaryData.originalBind[name].options) {
       let temp2;
       /** 查看是否为 options 全拼  */
       if (auxiliaryData.originalBind[name].options[currentArg])
@@ -128,9 +128,9 @@ function manageResult(data: string[], auxiliaryData: AuxiliaryData): void {
 // 当值为选择选项
 function dataIsCode(name: string) {
   // 倘若上一个项存在
-  if (manageData.name !== "") {
+  if (manageData.name !== '') {
     addResultItem();
-    manageData.resetItem("");
+    manageData.resetItem('');
   }
   // 设置新的项值
   manageData.resetObject(name);
@@ -147,17 +147,17 @@ function dataIsOption(name: string) {
 // 当值被认定为参数的值
 function dataIsValue(value: string | boolean | number) {
   value =
-    value == "true"
+    value == 'true'
       ? true
-      : value == "false"
-      ? false
-      : value == Number(value)
-      ? Number(value)
-      : value;
-  if (manageData.name === "") return;
+      : value == 'false'
+        ? false
+        : value == Number(value)
+          ? Number(value)
+          : value;
+  if (manageData.name === '') return;
   //   当下一定有值，判断当下是否有子项
   (
-    manageData[manageData.item.name ? "item" : "object"].value as (
+    manageData[manageData.item.name ? 'item' : 'object'].value as (
       | string
       | boolean
       | number
@@ -170,7 +170,7 @@ function addResultItem() {
   /** 拿到数据 */
   const { name, object, item, result } = manageData;
   /** 数据为空 */
-  if (name === "") return;
+  if (name === '') return;
   // @ts-expect-error  若有子项将子项推进父项
   item.name && object.options?.push(item);
   // 将数据推进结果

@@ -1,11 +1,11 @@
-import commandData from "src/commandData";
-import { ParamDataType } from "./types";
-import origin_selection from "./originSelection";
+import commandData from 'src/commandData';
+import { SelectionParamDataType } from './types';
+import origin_selection from './originSelection';
 
 /** Export a displayed list selection
  *
  *  ```ts
- *  type ParamDataType = DataType | any[] | DataType;
+ *  type SelectionParamDataType =  any[] | DataType;
  *
  *  type DataType = {
  *    data: any[], //  Selected data to be rendered
@@ -68,12 +68,17 @@ import origin_selection from "./originSelection";
  *
  *  ```
  */
-export default function selection(data: ParamDataType, resultType?: "number" | "string"): Promise<string> {
+export default function selection(
+  data: SelectionParamDataType,
+  resultType?: 'number' | 'string',
+): Promise<string> {
   return new Promise((resolve: any, reject: any) => {
-    commandData.on(
-      Symbol('selection'),
-      () => origin_selection(data, resultType)
-        .then((result) => resolve((commandData.remove(), result)))
-        .catch(() => reject((commandData.remove(), resultType == 'string' && "" || -1))));
+    commandData.on(Symbol('selection'), () =>
+      origin_selection(data, resultType)
+        .then(result => resolve((commandData.remove(), result)))
+        .catch(() =>
+          reject((commandData.remove(), (resultType == 'string' && '') || -1)),
+        ),
+    );
   });
-};;
+}

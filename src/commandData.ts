@@ -8,12 +8,15 @@ export default {
     list.push([uniKey, callFn]);
   },
   /** 移除上一个事件
-   * 
+   *
    * 返回值仅代表当前是否结束
    */
   remove() {
     const list: any = this.callList;
     list.shift();
-    return !(list[0] && (Reflect.apply(list[0][1], undefined, []), true) || false);
-  }
-}
+    return !(
+      (list[0] && (Reflect.apply(list[0][1], undefined, []), true)) ||
+      false
+    );
+  },
+};

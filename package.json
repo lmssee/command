@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "name": "ismi-command",
   "main": "exportCjs/index.cjs",
   "module": "exportMjs/index.mjs",
@@ -27,6 +27,7 @@
   "scripts": {
     "build": "npm run clear && npm run b",
     "b": "rollup --config rollup.config.js && tsc -p tsconfig.types.json",
+    "prettier": "npx prettier . --write",
     "clear": "npx ixxx rm exportCjs exportMjs exportTypes",
     "clean": "npx ixxx pkg -u rm node_modules && npm install && npm run build",
     "diff": "npx ixxx pkg -d",
@@ -64,6 +65,7 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/node": "^20.14.2",
     "javascript-obfuscator": "^4.1.0",
+    "prettier": "3.3.2",
     "rollup-plugin-cleanup": "^3.2.1",
     "rollup-plugin-obfuscator": "^1.1.0",
     "typescript": "^5.4.5"

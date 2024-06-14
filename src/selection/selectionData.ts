@@ -1,10 +1,10 @@
-import { DataType, ParamDataType } from "./types";
+import { DataType, SelectionParamDataType } from './types';
 
-const info = "请使用键盘选择，请使用 Enter 键选择您的选择",
-  resultText = "您的选择为",
+const info = '请使用键盘选择，请使用 Enter 键选择您的选择',
+  resultText = '您的选择为',
   showPreview = false,
   privateValue = false,
-  preview = "当前选择为 ";
+  preview = '当前选择为 ';
 const data: DataType = {
   drawData: [],
   info,
@@ -14,9 +14,10 @@ const data: DataType = {
   preview,
   private: privateValue,
   data: [],
-  assign(params: ParamDataType) {
+  assign(params: SelectionParamDataType) {
     Object.keys(params).forEach((currentKey: any) => {
-      if ((this as any)[currentKey] != undefined) (this as any)[currentKey] = (params as any)[currentKey];
+      if ((this as any)[currentKey] != undefined)
+        (this as any)[currentKey] = (params as any)[currentKey];
     });
   },
   reset() {
@@ -27,7 +28,7 @@ const data: DataType = {
     this.resultText = resultText;
     this.preview = preview;
     this.private = privateValue;
-  }
+  },
 };
 
 export default data;
