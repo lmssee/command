@@ -5,22 +5,22 @@ import { ManageDataType } from "./types";
 /** Parsing user parameters
  *
  *
- * 解析用户参数 
- * 
- * 
+ * 解析用户参数
+ *
+ *
  * 将用的输入参数解析为一个数组，数组包含匹配（可能有重复的）的每一项
- * 
- * 
+ *
+ *
  * ```ts
  *   result :  {
- *        name:string, 
+ *        name:string,
  *        value?: boolean|string[] ,
  *        options?: {
  *            name: string,
  *            value: boolean|string[]
- *        }[]  
+ *        }[]
  *     } []
- * 
+ *
  * ```
  */
 export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
@@ -43,7 +43,8 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
    *
    *  命令中含有 -v 展示当前版本
    */
-  if (/\^-{1,2}v(ersion)?\^/i.test(_argString)) return showVersion(auxiliaryData);
+  if (/\^-{1,2}v(ersion)?\^/i.test(_argString))
+    return showVersion(auxiliaryData);
   if (_temporaryHelpIndex == 0) return (auxiliaryData.helpInfo = "help");
   let result: {
     name: string;
@@ -52,19 +53,20 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
   }[] = [];
   // 命令含有  -h
   if (_temporaryHelpIndex > 0) {
-    result = manageResult(_args.slice(0, _temporaryHelpIndex + 1), auxiliaryData);
+    manageResult(_args.slice(0, _temporaryHelpIndex + 1), auxiliaryData);
     // 设定值
-    auxiliaryData.args = result as any;
+    auxiliaryData.args = manageData.result as any;
     auxiliaryData.helpInfo =
       result.length == 0
         ? "help"
         : result[0].options == undefined || result[0].options?.length == 0
-          ? result[0].name
-          : [result[0].name, result[0].options[0].name];
+        ? result[0].name
+        : [result[0].name, result[0].options[0].name];
     return;
   }
+  manageResult(_args, auxiliaryData);
   // 正常的解析
-  auxiliaryData.args = manageResult(_args, auxiliaryData);
+  auxiliaryData.args = manageData.result as any;
 }
 
 /** 整理数据用到的数据 */
@@ -83,7 +85,7 @@ const manageData: ManageDataType = {
 };
 
 /** 参数整理函数 */
-function manageResult(data: string[], auxiliaryData: AuxiliaryData): any {
+function manageResult(data: string[], auxiliaryData: AuxiliaryData): void {
   // 解析每一个参数
   data.forEach((currentArg: string) => {
     const { name } = manageData;
@@ -97,16 +99,19 @@ function manageResult(data: string[], auxiliaryData: AuxiliaryData): any {
     let temp1;
     /** 查看是否为全拼 */
     if (auxiliaryData.originalBind[currentArg]) temp1 = currentArg;
-    /** 参看是否为缩写 */
-    else if (auxiliaryData.abbr[currentArg]) temp1 = auxiliaryData.abbr[currentArg];
+    /** 参看是否为缩写 */ else if (auxiliaryData.abbr[currentArg])
+      temp1 = auxiliaryData.abbr[currentArg];
 
     /** 当尚未有匹配项时，检测是否有  */
     if (name !== "" && auxiliaryData.originalBind[name].options) {
       let temp2;
       /** 查看是否为 options 全拼  */
-      if (auxiliaryData.originalBind[name].options[currentArg]) temp2 = currentArg;
-      /** 参看是否为 options 的缩写 */
-      else if (auxiliaryData.abbr[`${name}^${currentArg}`]) temp2 = auxiliaryData.abbr[`${name}^${currentArg}`];
+      if (auxiliaryData.originalBind[name].options[currentArg])
+        temp2 = currentArg;
+      /** 参看是否为 options 的缩写 */ else if (
+        auxiliaryData.abbr[`${name}^${currentArg}`]
+      )
+        temp2 = auxiliaryData.abbr[`${name}^${currentArg}`];
       // 当有已匹配，先以检测子项为准
       if (Boolean(temp2)) return dataIsOption(temp2);
     }
@@ -118,7 +123,6 @@ function manageResult(data: string[], auxiliaryData: AuxiliaryData): any {
 
   /**  作为值处理数据 */
   addResultItem();
-  return manageData.result;
 }
 
 // 当值为选择选项
@@ -142,10 +146,23 @@ function dataIsOption(name: string) {
 
 // 当值被认定为参数的值
 function dataIsValue(value: string | boolean | number) {
-  value = value == "true" ? true : value == "false" ? false : value == Number(value) ? Number(value) : value;
+  value =
+    value == "true"
+      ? true
+      : value == "false"
+      ? false
+      : value == Number(value)
+      ? Number(value)
+      : value;
   if (manageData.name === "") return;
   //   当下一定有值，判断当下是否有子项
-  (manageData[manageData.item.name ? 'item' : 'object'].value as (string | boolean | number)[]).push(value)
+  (
+    manageData[manageData.item.name ? "item" : "object"].value as (
+      | string
+      | boolean
+      | number
+    )[]
+  ).push(value);
 }
 
 // 将匹配追加到数据

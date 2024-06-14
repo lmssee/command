@@ -2,7 +2,6 @@ import { $arrMap, $map, ArgsType, StateType } from "./types";
 
 const originalArg: string[] = process.argv.slice(2);
 
-
 /** 定义数据中心 */
 export const auxiliaryData: { [key: symbol]: AuxiliaryData } = {};
 
@@ -63,15 +62,15 @@ export class AuxiliaryData {
 class TempArgs extends Array {
   get $map(): $map {
     return {};
-  };
+  }
   get $arrMap(): $arrMap {
-    return []
-  };
+    return [];
+  }
   get $only(): string[] | [] {
-    return []
+    return [];
   }
   get $original(): string[] | [] {
-    return []
+    return [];
   }
 
   get $isVoid(): boolean {
@@ -79,34 +78,40 @@ class TempArgs extends Array {
   }
 }
 /** 因为要保持数据的独立性，所以应当是一个函数 */
-export const createAuxiliaryData = () => new Proxy(new AuxiliaryData(), {
-  get(target: any, p, receive) {
-    if (p == 'args') {
-      const args = JSON.parse(JSON.stringify(target[Symbol.for('_args')] || {}));
-      return new Proxy(args, {
-        get(_target, _p, _receiver) {
-          if (_p == '$map') return get$map(args);
-          if (_p == '$arrMap') return get$arrMap(args);
-          if (_p == '$only') return (args).map((currentEle: { name: string }) => currentEle.name);
-          if (_p == '$original') return originalArg.slice();
-          if (_p == '$isVoid') return originalArg.slice().length == 0;
-          return 'hello world'
-        },
-        set(_target, _p, _newValue, _receive) {
-          Reflect.set(_target, _p, _newValue, _receive);
-          return true;
-        }
-      });
-    }
-    return Reflect.get(target, p, receive);
-  },
-  set(target: any, p, newValue, receiver) {
-    if (p == 'args') {
-      target[Symbol.for('_args')] = newValue;
-    } else Reflect.set(target, p, newValue, receiver);
-    return true;
-  }
-});
+export const createAuxiliaryData = () =>
+  new Proxy(new AuxiliaryData(), {
+    get(target: any, p, receive) {
+      if (p == "args") {
+        const args = JSON.parse(
+          JSON.stringify(target[Symbol.for("_args")] || [])
+        );
+        return new Proxy(args, {
+          get(_target, _p, _receiver) {
+            if (_p == "$map") return get$map(args);
+            if (_p == "$arrMap") return get$arrMap(args);
+            if (_p == "$only")
+              return args.map(
+                (currentEle: { name: string }) => currentEle.name
+              );
+            if (_p == "$original") return originalArg.slice();
+            if (_p == "$isVoid") return originalArg.slice().length == 0;
+            return "hello world";
+          },
+          set(_target, _p, _newValue, _receive) {
+            Reflect.set(_target, _p, _newValue, _receive);
+            return true;
+          },
+        });
+      }
+      return Reflect.get(target, p, receive);
+    },
+    set(target: any, p, newValue, receiver) {
+      if (p == "args") {
+        target[Symbol.for("_args")] = newValue;
+      } else Reflect.set(target, p, newValue, receiver);
+      return true;
+    },
+  });
 
 /** $map 的类型声明
  *
@@ -116,8 +121,6 @@ export const createAuxiliaryData = () => new Proxy(new AuxiliaryData(), {
 export type $MapType = {
   [key: string]: true | string | { [key: string]: true | string | string[] };
 };
-
-
 
 /** 返回 args 的 map 版本 */
 function get$map(value: any[]): $MapType {
@@ -130,12 +133,20 @@ function get$map(value: any[]): $MapType {
     /** 判断是否已经存在同名属性 */
     let valueIsExist = Object.keys(_temp).length > 0;
     // 判断当前是否有 value 属性，并判断是否有同名属性，有则追加，没有则直接
-    currentElement.value.length > 0 && (_temp.value = valueIsExist ? _temp.value.concat(currentElement.value) : currentElement.value);
+    currentElement.value.length > 0 &&
+      (_temp.value = valueIsExist
+        ? _temp.value.concat(currentElement.value)
+        : currentElement.value);
     // 当前元素有子项
     if (currentElement.options) {
       // 每一个子项再遍历（遍历需考虑旧数据问题，即已经存在同名属性 valueIsExist 为 true 情况）
-      currentElement.options.forEach((_currentEle: any) =>
-        _temp[_currentEle.name] = (valueIsExist && _temp[_currentEle.name] !== undefined) ? _temp[_currentEle.name].concat(_currentEle.value) : _currentEle.value);
+      currentElement.options.forEach(
+        (_currentEle: any) =>
+          (_temp[_currentEle.name] =
+            valueIsExist && _temp[_currentEle.name] !== undefined
+              ? _temp[_currentEle.name].concat(_currentEle.value)
+              : _currentEle.value)
+      );
     }
     resultValue[currentElement.name] = _temp;
   });
@@ -144,8 +155,8 @@ function get$map(value: any[]): $MapType {
 }
 
 /** 返回一个数组对象，有序的，与本体值类似，每一个元素都可以做会返回值。
- * 
- * 
+ *
+ *
  * 主要关注的是有序
  */
 function get$arrMap(value: any[]): [] | {}[] {
@@ -154,11 +165,16 @@ function get$arrMap(value: any[]): [] | {}[] {
     // 临时演员
     let resultValue: any = {};
     // 临时演员
-    const _temp: any = resultValue[currentElement.name] = {};
+    const _temp: any = (resultValue[currentElement.name] = {});
     // 判断当前是否有 value 属性
-    currentElement.value && currentElement.value.length > 0 && (_temp.value = currentElement.value);
+    currentElement.value &&
+      currentElement.value.length > 0 &&
+      (_temp.value = currentElement.value);
     // 当前元素有子项
-    if (currentElement.options && currentElement.options.length > 0) currentElement.options.forEach((_currentEle: any) => _temp[_currentEle.name] = _currentEle.value);
+    if (currentElement.options && currentElement.options.length > 0)
+      currentElement.options.forEach(
+        (_currentEle: any) => (_temp[_currentEle.name] = _currentEle.value)
+      );
     return resultValue;
   });
 }
