@@ -12,7 +12,8 @@ export default function computeCodeCount() {
       // Calculate the number of columns occupied by a single character
       // 计算单字符占列数
       if (currentIndex >= questionData.indexOfCursor)
-        currentValue += (currentElement as any).codePointAt(0) > 0x0ff ? 2 : 1;
+        currentValue +=
+          (currentElement.codePointAt(0) as number) > 0x0ff ? 2 : 1;
       return currentValue;
     },
     0,

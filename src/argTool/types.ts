@@ -2,9 +2,22 @@
  *
  *
  * 命令行选项参数
+ *
+ * ```ts
+ *  {
+ *    name?: string ;
+ *    info?: string ;
+ *    abbr?: string ;
+ *    hide?: boolean;
+ *  }
+ * ```
+ *
+ * 参数类型为用户输入，不强制用户输入包含所有的参数\
+ * 这一点与下面的  `BindParamsType` 及  `BindParamsOptionsType` 不同
+ *
  */
 
-export interface SubOptionsType {
+export type SubOptionsType = {
   /** Command line option parameter name，suggest within 15 English characters
    *
    * 命令行选项参数名称，建议在 15 个英文字符内
@@ -25,7 +38,7 @@ export interface SubOptionsType {
    * 是否展示在帮助中
    */
   hide?: boolean;
-}
+};
 
 /**
  *
@@ -46,7 +59,7 @@ export type ParamType = {
    *
    *  选项
    */
-  options?: SubOptionsType | (SubOptionsType | string)[] | string;
+  options?: BindParamsOptionsType;
   /** abbreviation
    *
    * 缩写
@@ -59,6 +72,25 @@ export type ParamType = {
   hide?: boolean;
 };
 
+/** 原始绑定的类型声明
+ * ```ts
+ *  type  SubOptionsType = {
+ *        name: string;
+ *        abbr: string;
+ *        info: string;
+ *        hide: boolean;
+ *   }
+ *
+ * ```
+ */
+export type ArgOriginBind = {
+  [key: string]: {
+    name: string;
+    info: string;
+    abbr: string;
+    options: { [key: string]: SubOptionsType };
+  };
+};
 /** Description of Binding Command Line Parameter Types
  *
  * 绑定命令行参数类型说明
@@ -66,69 +98,16 @@ export type ParamType = {
 export type BindParamsType =
   | string
   | {
-      [key in string]?:
-        | string
-        | SubOptionsType
-        | (string | SubOptionsType)[]
-        | undefined;
+      [key in string]?: BindParamsOptionsType;
     }
   | (string | ParamType)[]
   | ParamType;
 
-/** current issue
- *  ```js
- *  {
- *    //  question text
- *    // 当前问题展示
- *    text: string,
- *    // User prompt: When it is pure text, display as text prompt;
- *    //  When it is an array, it defaults to selective questioning
- *    // 用户提示：当为纯文本时，展示为文本提示；
- *    //  当为数组时，默认为选择式提问
- *     tip?: string | number | never | Boolean | null | undefined | any[],
- *     //  Type, only supports `text` and `password`，default  is `text`
- *     // 类型，仅支持文本（`text`）和密码（`password`），缺省为文本
- *     type?: "text" | "password",
- *     //  Privacy mode, user answers will overwrite the previous question line
- *     //  私密模式
- *     private?: false | true,
- *     // Result display text
- *     //   结果展示文本
- *     resultText?: string
- * }
- * ```
- * */
-type CurrentIssueType = {
-  /**    question text
-   *
-   *   当前问题展示
-   **/
-  text: string;
-  /** User prompt: When it is pure text, display as text prompt;
-   *
-   *  When it is an array, it defaults to selective questioning
-   *
-   *  用户提示：当为纯文本时，展示为文本提示；
-   *
-   *  当为数组时，默认为选择式提问
-   * */
-  tip?: string | number | never | Boolean | null | undefined | any[];
-  /** Type, only supports `text` and `password`，default  is `text`
-   *
-   * 类型，仅支持文本（`text`）和密码（`password`），缺省为文本
-   **/
-  type?: 'text' | 'password';
-  /** Privacy mode, user answers will overwrite the previous question line
-   *
-   * 私密模式
-   */
-  private?: false | true;
-  /** Result display text
-   *
-   *  结果展示文本
-   */
-  resultText?: string;
-};
+/** 绑定的子项类型声明  */
+export type BindParamsOptionsType =
+  | string
+  | SubOptionsType
+  | (string | SubOptionsType)[];
 
 /** stateType
  *
@@ -140,19 +119,33 @@ export type StateType = {
   overCode?: 'version' | 'help';
 };
 
+/**
+ * 当前的  arg \
+ * 处理后的原始参数的值
+ */
 export type ArgsItem = {
   name: string;
-  value?: string[];
-  options?: { name: string; value?: string[] }[];
+  value: string[];
+  options: { name: string; value: string[] }[];
 };
 
-/** 返回 args 上 $map 类型声明 */
-export type $map = {
-  [key: string]: { [key: string]: string[] | []; value: string[] | [] };
+/** $map 的类型声明
+ *
+ * Record<string, boolean | unknown>
+ *
+ * */
+export type ArgsMapType = {
+  [key: string]: ArgsMapItemType;
 };
 
-/** 返回 args 上 $arrMap 类型 */
-export type $arrMap = { [key: string]: { [key: string]: string[] | [] } }[];
+/** $map 值的子项  */
+export type ArgsMapItemType = {
+  [key: string]: (string | boolean | number)[];
+  value: (string | number | boolean)[];
+};
+
+/** 导出数组对象的类型  */
+export type ArgsArrMapType = ArgsMapType[];
 
 /** 导出 arg 返回的 args 的类型
  *
@@ -177,7 +170,7 @@ export interface ArgsType extends Array<ArgsItem> {
    * }
    * ````
    */
-  $map: $map;
+  $map: ArgsMapType;
   /**
    *
    * ```ts
@@ -189,25 +182,28 @@ export interface ArgsType extends Array<ArgsItem> {
    * ```
    *
    */
-  $arrMap: $arrMap;
+  $arrMap: ArgsArrMapType;
   /** 仅有头部的字符串数组
    *
    */
-  $only: string[] | [];
+  $only: string[];
   /** 原始参数 */
-  $original: string[] | [];
+  $original: string[];
   /** 是否为空 */
   $isVoid: boolean;
 }
 
 /** 子项的类型 */
-type ManageDataTypeItem = { name?: string; value?: (string | boolean)[] | [] };
+export type ManageDataTypeItem = {
+  name: string;
+  value: (string | boolean)[] | [];
+};
 
 /** 子项列的类型 */
-type ManageDataTypeObject = {
+export type ManageDataTypeObject = {
   name: string;
-  value?: (string | boolean)[] | [];
-  options?: ManageDataTypeItem[] | [];
+  value: (string | boolean)[] | [];
+  options: ManageDataTypeItem[] | [];
 };
 
 /** 解析用户参数数据 */

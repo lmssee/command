@@ -1,6 +1,6 @@
 import { AuxiliaryData } from './auxiliaryData';
 import showVersion from './showVersion';
-import { ManageDataType } from './types';
+import { ArgsType, ManageDataType, ManageDataTypeItem } from './types';
 
 /** Parsing user parameters
  *
@@ -23,7 +23,7 @@ import { ManageDataType } from './types';
  *
  * ```
  */
-export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
+export default function paringUserArgs(auxiliaryData: AuxiliaryData): void {
   // 用户没有传参数
   if (process.argv.length == 2) return;
   /** Get user input parameters
@@ -43,10 +43,15 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
    *
    *  命令中含有 -v 展示当前版本
    */
-  if (/\^-{1,2}v(ersion)?\^/i.test(_argString))
-    return showVersion(auxiliaryData);
-  if (_temporaryHelpIndex == 0) return (auxiliaryData.helpInfo = 'help');
-  let result: {
+  if (/\^-{1,2}v(ersion)?\^/i.test(_argString)) {
+    showVersion(auxiliaryData);
+    return;
+  }
+  if (_temporaryHelpIndex == 0) {
+    auxiliaryData.helpInfo = 'help';
+    return;
+  }
+  const result: {
     name: string;
     value?: string[];
     options?: { name: string; value?: string[] }[];
@@ -55,7 +60,7 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
   if (_temporaryHelpIndex > 0) {
     manageResult(_args.slice(0, _temporaryHelpIndex + 1), auxiliaryData);
     // 设定值
-    auxiliaryData.args = manageData.result as any;
+    auxiliaryData.args = manageData.result as ArgsType;
     auxiliaryData.helpInfo =
       result.length == 0
         ? 'help'
@@ -66,7 +71,7 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): any {
   }
   manageResult(_args, auxiliaryData);
   // 正常的解析
-  auxiliaryData.args = manageData.result as any;
+  auxiliaryData.args = manageData.result as ArgsType;
 }
 
 /** 整理数据用到的数据 */
@@ -93,10 +98,10 @@ function manageResult(data: string[], auxiliaryData: AuxiliaryData): void {
 
     if (!currentArg) return;
     // 当前为值
-    if (!Boolean(/^([a-z]|[A-Z]|-|$|_)/.test(currentArg)))
+    if (!/^([a-z]|[A-Z]|-|$|_)/.test(currentArg))
       return dataIsValue(currentArg);
     // 参看该值是否能匹配上一级
-    let temp1;
+    let temp1: string = '';
     /** 查看是否为全拼 */
     if (auxiliaryData.originalBind[currentArg]) temp1 = currentArg;
     /** 参看是否为缩写 */ else if (auxiliaryData.abbr[currentArg])
@@ -104,19 +109,21 @@ function manageResult(data: string[], auxiliaryData: AuxiliaryData): void {
 
     /** 当尚未有匹配项时，检测是否有  */
     if (name !== '' && auxiliaryData.originalBind[name].options) {
-      let temp2;
+      let temp2: string = '';
       /** 查看是否为 options 全拼  */
-      if (auxiliaryData.originalBind[name].options[currentArg])
+      if (auxiliaryData.originalBind[name].options[currentArg]) {
         temp2 = currentArg;
-      /** 参看是否为 options 的缩写 */ else if (
+      } else if (
+        /** 参看是否为 options 的缩写 */
         auxiliaryData.abbr[`${name}^${currentArg}`]
-      )
+      ) {
         temp2 = auxiliaryData.abbr[`${name}^${currentArg}`];
+      }
       // 当有已匹配，先以检测子项为准
-      if (Boolean(temp2)) return dataIsOption(temp2);
+      if (temp2) return dataIsOption(temp2);
     }
     // 子项未匹配，再次检测是否为匹配项
-    if (Boolean(temp1)) return dataIsCode(temp1);
+    if (temp1) return dataIsCode(temp1);
     // 当未匹配，则认定为有效值
     return dataIsValue(currentArg);
   });
@@ -139,8 +146,8 @@ function dataIsCode(name: string) {
 // 当前值为子项
 function dataIsOption(name: string) {
   const { item, object } = manageData;
-  // 上一个子项值存在
-  if (item.name) (object.options as any).push(item);
+  // 上一个子项值存在 。因为在 if 中已经做了存在的判断
+  if (item.name) (object.options as ManageDataTypeItem[]).push(item);
   manageData.resetItem(name);
 }
 

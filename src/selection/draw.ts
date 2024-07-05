@@ -6,7 +6,7 @@ const { stdout } = process;
 /** draw
  *
  *  绘制  */
-export default function (keyValue: any = undefined) {
+export default function () {
   const len = selectionData.data.length, // Get the number of options  // 获取选项长度
     { info, select, drawData, showPreview, preview } = selectionData;
   // 绘制数据截断

@@ -10,17 +10,21 @@ const { stdout } = process;
  */
 export default async function () {
   await readInput(
-    (keyValue: string | undefined, key: any) => {
+    (keyValue: string | undefined, key) => {
       const { type, currentIssue, userInput, results, multi } = questionData;
-      let arr: any[] = [],
+      /** 当前问题  */
+      const currentQuestion = currentIssue.text,
+        /** 当前答案  */
+        currentResult = userInput.join('');
+      let arr: string[] = [],
         len: number = 0,
         _index: number = 0;
       if (type != 0)
         // 选择模式
-        (arr = currentIssue.tip as any[]),
+        (arr = currentIssue.tip as string[]),
           (len = arr.length - 1),
           (_index = arr.indexOf(userInput[0]));
-      switch (key.name) {
+      switch ((key as { name: string }).name) {
         case 'return':
           /** The user did not input the enter key and clicked it directly
            *
@@ -36,9 +40,8 @@ export default async function () {
             );
             break;
           }
-          const q = currentIssue.text,
-            r = userInput.join('');
-          results.push({ q, r });
+
+          results.push({ q: currentQuestion, r: currentResult });
           /**
            *
            * 打印结果
@@ -48,7 +51,7 @@ export default async function () {
           currentIssue.private
             ? ''
             : stdout.write(
-                `👌 ${currentIssue.resultText || q}: ${Color.random(currentIssue.type == 'text' ? r : r.replace(/./gm, '*'))}\n`,
+                `👌 ${currentIssue.resultText || currentQuestion}: ${Color.random(currentIssue.type == 'text' ? currentResult : currentResult.replace(/./gm, '*'))}\n`,
               );
           cursorShow();
           if (!multi || !++questionData.progressCount) return true;
@@ -94,6 +97,7 @@ export default async function () {
          *
          *  Tab 键
          */
+        // eslint-disable-next-line no-fallthrough
         case 'tab':
           break;
         default:
@@ -116,6 +120,6 @@ export default async function () {
       draw();
       return false;
     },
-    { showCursor: true },
+    // { showCursor: true },
   );
 }

@@ -21,7 +21,7 @@
  * }
  * ```
  * */
-type CurrentIssueType = {
+export type CurrentIssueType = {
   /**    question text
    *
    *   当前问题展示
@@ -35,7 +35,7 @@ type CurrentIssueType = {
    *
    *  当为数组时，默认为选择式提问
    * */
-  tip?: string | number | never | Boolean | null | undefined | any[];
+  tip?: unknown | unknown[];
   /** Type, only supports `text` and `password`，default  is `text`
    *
    * 类型，仅支持文本（`text`）和密码（`password`），缺省为文本
@@ -57,8 +57,7 @@ type CurrentIssueType = {
  *
  *  数据类型
  */
-type DataType = {
-  assign(arg: any): void;
+export type QuestionDataType = {
   /** Current type
    *
    * -  0  ordinary  Q&A
@@ -104,18 +103,20 @@ type DataType = {
    *
    * 结果集，用于多询问模式
    */
-  results: any[];
+  results: unknown[];
+  /** 内部方法，混合数据 */
+  assign(arg: unknown): void;
+  /** 内部方法，变更当前的问题 */
+  init(): void;
 };
 
 /** Parameter `data` type
  *
  * 参数类型
  */
-type ParamDataType =
+export type QuestionParamDataType =
   | string
   | string[]
   | CurrentIssueType
   | CurrentIssueType[]
   | (CurrentIssueType | string)[];
-
-export type { ParamDataType, DataType, CurrentIssueType };

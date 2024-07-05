@@ -8,5 +8,5 @@
     "test/**/*.ts",
     "actions.ts"
   ],
-  "exclude": ["node_modules", "exportTypes"]
+  "exclude": ["node_modules", "dist"]
 }

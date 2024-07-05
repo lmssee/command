@@ -1,13 +1,14 @@
 import { Color, t } from 'ismi-node-tools';
 import { AuxiliaryData } from './auxiliaryData';
-const _blank = '    ';
+import { ArgOriginBind, SubOptionsType } from './types';
+/** 空白 */
+const _blank = '\x20'.repeat(4);
 /** organize help information
  *
  *  整理帮助信息
  */
 export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
-  auxiliaryData.state = { code: 4, text: 'over', overCode: 'help' };
-
+  auxiliaryData.state = 4;
   /**
    *
    *  某一 option
@@ -16,22 +17,24 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
     typeof auxiliaryData.helpInfo == 'string' &&
     auxiliaryData.helpInfo !== 'help'
   ) {
-    const data = auxiliaryData.originalBind[auxiliaryData.helpInfo as any];
-    console.log(`${_blank}${data.name}${_blank}${Color.magenta(data.info)}\n`);
+    const data = auxiliaryData.originalBind[auxiliaryData.helpInfo];
+    process.stdout.write(
+      `${_blank}${data.name}${_blank}${Color.magenta(data.info)}\n\n`,
+    );
     // 带子项的这里打印
     if (data.options && Object.keys(data.options).length > 0) {
-      console.log(
+      process.stdout.write(
         `${Color.darkYellow(`${_blank}use:`)}  ${auxiliaryData.name}   ${
           auxiliaryData.helpInfo
-        }   [subOptions/subAbbr  [value]]\n`,
+        }   [subOptions/subAbbr  [value]]\n\n`,
       );
-      console.log(`${Color.cyan(`${_blank}subOptions:`)} \n`);
+      process.stdout.write(`${Color.cyan(`${_blank}subOptions:`)} \n\n`);
       printHelpOther(data.options || {});
     } else {
-      console.log(
+      process.stdout.write(
         `${Color.green(`${_blank}use:`)}  ${auxiliaryData.name}   ${
           auxiliaryData.helpInfo
-        }    [value]\n`,
+        }    [value]\n\n`,
       );
     }
   } else if (
@@ -42,44 +45,57 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
     Array.isArray(auxiliaryData.helpInfo) &&
     (auxiliaryData.helpInfo as string[]).length == 2
   ) {
-    console.log(
+    process.stdout.write(
       `${Color.cyan(' you can use:')}  ${auxiliaryData.name}   ${(
         auxiliaryData.helpInfo as []
       ).join('   ')}   [value]\n ${Color.green(' description:')} ${
         auxiliaryData.originalBind[auxiliaryData.helpInfo[0]]['options'][
           auxiliaryData.helpInfo[1]
         ].info
-      } `,
+      }\n`,
     );
   } else {
     /** Follow up on configuration help documents
      *
      * 配置帮助文档
      */
-    console.log(
+    process.stdout.write(
       `${Color.darkRed(' you can use:')}  ${
         auxiliaryData.name
       }  options/abbr  [subOptions/subAbbr  [value]]\n\n${Color.random(
         'options:',
-      )}\n`,
+      )}\n\n`,
     );
     printHelpOther(auxiliaryData.originalBind, true);
   }
 }
 
 /**
- *
- *
  * 打印其他信息
+ *  ```ts
+ *  type ArgOriginBind = {
+ *     [key: string]: {
+ *         name: string;
+ *         info: string;
+ *         abbr: string;
+ *         options: {
+ *             [key: string]: SubOptionsType;
+ *         };
+ *     };
+ * }
+ * ```
  */
 
-function printHelpOther(data: any, printOther?: boolean) {
+function printHelpOther(
+  data: ArgOriginBind | { [key: string]: SubOptionsType },
+  printOther?: boolean,
+) {
   // 其他必须的信息
   const _otherMustInfo = ['version -v 版本描述', 'help -h 帮助查看'];
   const keys = Object.keys(data).sort();
   /** 限定 option  字符数  */
-  let maxLength: number = 8,
-    name: string = 'name',
+  let maxLength: number = 8;
+  const name: string = 'name',
     abbr: string | undefined = 'abbr',
     info: string = 'description';
   /** 查找最大字符数字符 */
@@ -88,17 +104,23 @@ function printHelpOther(data: any, printOther?: boolean) {
       (maxLength = Math.max(maxLength, currentEle.length)),
   );
   const len = Math.min(15, maxLength + 1);
-  console.log(formatHelpText({ len, name, info, abbr, color: false }), '\n');
+  process.stdout.write(formatHelpText({ len, name, info, abbr, color: false }));
+  process.stdout.write('\n\n');
   keys.forEach((currentKey: string) => {
+    // @ts-expect-error 下面对 options 做了 undefined 判断，这里是有意为之
     const { name, abbr, info, options } = data[currentKey];
     const textDecoration = options && Object.keys(options).length > 0;
-    console.log(formatHelpText({ len, name, info, abbr, textDecoration }));
+    process.stdout.write(
+      formatHelpText({ len, name, info, abbr, textDecoration }),
+    );
+    process.stdout.write('\n');
   });
   /** 打印必须项 */
   if (printOther) {
     _otherMustInfo.forEach((currentEle: string) => {
-      const [name, abbr, info] = currentEle.split(' ');
-      console.log(formatHelpText({ len, name, info, abbr }));
+      const [name, abbr, info] = currentEle.split('\x20');
+      process.stdout.write(formatHelpText({ len, name, info, abbr }));
+      process.stdout.write('\n');
     });
   }
 }
@@ -123,7 +145,7 @@ function formatHelpText(_d: {
   color?: boolean;
   textDecoration?: boolean;
 }) {
-  let abbrLimitLength = 6,
+  const abbrLimitLength = 6,
     data = Object.assign(
       {
         name: '',
@@ -160,5 +182,6 @@ function formatHelpText(_d: {
  * 返回字符计数
  */
 function computerCodePoint(str: string, limit: number): number {
+  // eslint-disable-next-line no-control-regex
   return Math.min(str.replace(/[^\x00-\x7f]/, '11').length, limit);
 }

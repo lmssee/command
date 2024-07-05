@@ -19,7 +19,6 @@ export default async function (
   selectionData.reset();
   (Array.isArray(data) && (selectionData.data = [...data])) ||
     selectionData.assign(data);
-  // const len = selectionData.data.length; // Get the number of options  // 获取选项长
 
   process.on('exit', unexpectedExit), cursorHide(), draw();
   // 等待用户选择

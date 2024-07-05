@@ -6,9 +6,7 @@ git.js
 
 # /node_modules
 **/node_modules
-/exportMjs
-/exportCjs
-/exportTypes
+dist
 
 ## 测试文件
 test/out

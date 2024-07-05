@@ -2,8 +2,9 @@ import typescript from '@rollup/plugin-typescript';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import terser from '@rollup/plugin-terser';
+// import terser from '@rollup/plugin-terser';
 import cleanup from 'rollup-plugin-cleanup';
+import copy from 'rollup-plugin-copy';
 
 /** 生成  npm 文件的打包配置文件 */
 export default {
@@ -15,7 +16,7 @@ export default {
       preserveModules: true,
       sourcemap: false,
       exports: 'named',
-      dir: 'exportMjs',
+      dir: 'dist/mjs',
     },
     {
       format: 'cjs',
@@ -23,7 +24,7 @@ export default {
       preserveModules: true,
       sourcemap: false,
       exports: 'named',
-      dir: 'exportCjs',
+      dir: 'dist/cjs',
     },
   ],
   // 配置需要排除的包
@@ -38,5 +39,13 @@ export default {
     typescript({}),
     // 去除无用代码
     cleanup(),
+    copy({
+      targets: [
+        { src: 'bin', dest: 'dist' },
+        { src: 'package.json', dest: 'dist' },
+        { src: 'README.md', dest: 'dist' },
+        { src: 'LICENSE', dest: 'dist' },
+      ],
+    }),
   ],
 };

@@ -8,15 +8,14 @@ import paringUserArgs from './paringUserArgs';
  */
 export default function executeParsing(auxiliaryData: AuxiliaryData) {
   switch (auxiliaryData.state.code) {
-    // case 1: console.log('尚未开始绑定'); break;
     case 3:
-      console.log('已经执行过 `run`');
+      process.stdout.write('已经执行过 `run`\n');
       return;
     case 4:
-      console.log('已完成全部');
+      process.stdout.write('已完成全部\n');
       return;
     default:
-      auxiliaryData.state = { code: 3, text: 'run over' };
+      auxiliaryData.state = 3;
   }
   paringUserArgs(auxiliaryData);
   beforeRun(auxiliaryData);
@@ -32,15 +31,18 @@ export default function executeParsing(auxiliaryData: AuxiliaryData) {
  * 执行冷冻数据
  */
 function beforeRun(auxiliaryData: AuxiliaryData) {
-  ['name', 'originBind', 'abbr'].forEach(
-    (currentEle: string) =>
-      (auxiliaryData as any)[currentEle] &&
-      Object.freeze((auxiliaryData as any)[currentEle]) &&
+  ['name', 'originBind', 'abbr'].forEach((currentEle: string) => {
+    // @ts-expect-error 冷冻属性（这里有判断，但是 ts 未识别， eslint 又不让 as any）
+    if (auxiliaryData[currentEle]) {
+      // @ts-expect-error 冷冻属性
+      Object.freeze(auxiliaryData[currentEle]);
       Object.defineProperty(auxiliaryData, currentEle, {
-        value: (auxiliaryData as any)[currentEle],
+        // @ts-expect-error 冷冻属性
+        value: auxiliaryData[currentEle],
         writable: false,
         enumerable: true,
         configurable: false,
-      }),
-  );
+      });
+    }
+  });
 }

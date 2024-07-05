@@ -1,6 +1,11 @@
 import { typeOf } from 'ismi-js-tools';
-import { BindParamsType, ParamType, SubOptionsType } from './types';
-import { auxiliaryData as auData, AuxiliaryData } from './auxiliaryData';
+import {
+  BindParamsOptionsType,
+  BindParamsType,
+  ParamType,
+  SubOptionsType,
+} from './types';
+import { AuxiliaryData } from './auxiliaryData';
 
 /**  Binding options, descriptions, and abbreviation
  *
@@ -14,16 +19,17 @@ import { auxiliaryData as auData, AuxiliaryData } from './auxiliaryData';
 export default function bindInstruction(
   data: BindParamsType,
   auxiliaryData: AuxiliaryData,
-): any {
+) {
+  ///  检测当前
   switch (auxiliaryData.state.code) {
     case 3:
-      console.log('已经执行过 `run`');
+      process.stdout.write('已经执行过 `run`\n');
       return;
     case 4:
-      console.log('已完成全部');
+      process.stdout.write('已完成全部\n');
       return;
     default:
-      auxiliaryData.state = { code: 2, text: 'bind over' };
+      auxiliaryData.state = 2;
   }
   let _d: ParamType = {
     name: '',
@@ -53,14 +59,14 @@ export default function bindInstruction(
       _d_keys = Object.keys(_d);
     return keys.forEach((currentEle: string) => {
       if (!_d_keys.includes(currentEle)) {
-        let name, info, abbr;
-        [name, abbr, info] = parsingDataOfString(currentEle);
+        const [name, abbr, info] = parsingDataOfString(currentEle);
         return bindInstruction(
           {
             name,
             info,
             abbr,
-            options: (data as { [key in string]?: any })[currentEle],
+            // @ts-expect-error 在上一个 if 中已做了处理
+            options: data[currentEle],
           },
           auxiliaryData,
         );
@@ -74,37 +80,60 @@ export default function bindInstruction(
    */
   Boolean(_d.abbr) && (auxiliaryData.abbr[_d.abbr as string] = _d.name);
 
-  if (_d.options && typeOf(_d.options) !== 'array')
-    _d.options = [_d.options] as any;
   /** If there are sub items
    *
-   *  倘若有子项
+   *  倘若有子项 \
+   * 这里对 _d.options 做了数组判定
    */
-  if (Array.isArray(_d.options)) {
-    _d.options = parsingSubOption(_d.options, _d.name, auxiliaryData) as any;
+  if (_d.options) {
+    // @ts-expect-error 这里无需处理
+    _d.options = parsingSubOption(_d.options, _d.name, auxiliaryData);
   }
+  // @ts-expect-error 这里无需处理
   auxiliaryData.originalBind[_d.name] = { ..._d };
 }
 
 /** Parse sub items
  *
  * 解析子项
+ *
+ *
+ * ```ts
+ * type BindParamsOptionsType = string | SubOptionsType
+ *                              | (string | SubOptionsType)[];
+ *
+ * type AuxiliaryData
+ * ```
+ *
  */
 function parsingSubOption(
-  data: any[],
+  data: BindParamsOptionsType,
   name: string,
   auxiliaryData: AuxiliaryData,
-): any {
-  const temporaryObject: any = {};
-  data.forEach((currentEle: SubOptionsType) => {
+): {
+  [a: string]: { name: string; abbr: string; info: string };
+} {
+  // 转化非数组
+  if (typeOf(data) !== 'array') {
+    data = [data as SubOptionsType | string];
+  }
+  const temporaryObject: {
+    [a: string]: { name: string; abbr: string; info: string };
+  } = {};
+  // 前面已经把非数组进行了转化为数组
+  (data as (string | SubOptionsType)[]).forEach(currentEle => {
     let _d = {
       name: '',
       abbr: '',
       info: '',
     };
-    if (typeof currentEle == 'string')
+    // 如果是简单的字符串，则使用 `parsingDataOfString` 解析为数组
+    if (typeof currentEle == 'string') {
       [_d.name, _d.abbr, _d.info] = parsingDataOfString(currentEle);
-    else _d = Object.assign(_d, currentEle);
+    } else {
+      // 直接将值进行转化
+      _d = Object.assign(_d, currentEle);
+    }
     _d.abbr && (auxiliaryData.abbr[`${name}^${_d.abbr}`] = _d.name);
     temporaryObject[_d.name] = _d;
   });
@@ -113,12 +142,13 @@ function parsingSubOption(
 
 /** Parse when binding data to string type
  *
- * 解析当绑定数据为字符串类型
+ * 解析当绑定数 据为字符串类型
+ *
+ * @returns 返回是 [string, string, string] ，对应了 [name , abbr , info];
  */
-function parsingDataOfString(data: string) {
-  const name = data.replace(/^(.*?)\s.*/gm, '$1');
-  const abbr =
-    (/\<.+\>/.test(data) && data.replace(/.*\<(.+)\>.*/, '$1')) || '';
-  const description = data.replace(/.*?\((.*)\).*?/, '$1') || '';
-  return [name, abbr, description];
+function parsingDataOfString(data: string): [string, string, string] {
+  const name = data.replace(/^(.*?)\s.*/gm, '$1') || '';
+  const abbr = (/<.+>/.test(data) && data.replace(/.*<(.+)>.*/, '$1')) || '';
+  const info = data.replace(/.*?\((.*)\).*?/, '$1') || '';
+  return [name, abbr, info];
 }

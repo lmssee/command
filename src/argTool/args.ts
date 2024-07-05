@@ -1,10 +1,6 @@
 import { initializeFile } from 'ismi-node-tools';
 import { ArgsType, BindParamsType, StateType } from './types';
-import {
-  auxiliaryData,
-  AuxiliaryData,
-  createAuxiliaryData,
-} from './auxiliaryData';
+import { auxiliaryData, createAuxiliaryData } from './auxiliaryData';
 import bindInstruction from './bindInstructions';
 import executeParsing from './executeParsing';
 import { organizeHelpInformation } from './organizeHelpInformation';
@@ -227,6 +223,7 @@ class Args {
    *  调用会返回一个布尔值 ，布尔值上有一个属性 `end` 可以直接终止当前进程
    */
   get isEnd() {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;
     class My extends Boolean {
       constructor() {
@@ -280,7 +277,7 @@ class Args {
    * 
    * 
    */
-  bind(data: BindParamsType): any {
+  bind(data: BindParamsType) {
     bindInstruction(data, auxiliaryData[this.uniKey]);
     return this;
   }

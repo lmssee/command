@@ -1,22 +1,41 @@
-import { DataType, ParamDataType } from './types';
+import { QuestionDataType, QuestionParamDataType } from './types';
 import computeCodeCount from './computeCodeCount';
 import changeCurrentIssue from './changeCurrentIssue';
 import { cursorHide, cursorShow } from 'ismi-node-tools';
 
 export const originalData: {
-  data: ParamDataType;
+  multi: boolean;
+  data: QuestionParamDataType;
   type: 0 | 1;
   progressCount: number;
   indexOfCursor: number;
+  init: (param: QuestionParamDataType) => void;
 } = {
+  /** 该值在下面的 init 中初始化 */
   data: '',
+  /** 该值在每一次 `changeCurrentIssue` 时自动更新 */
   type: 0,
+  /** 该值在下面的 init 中初始化 */
+  multi: false,
+  /** 该值在下面的 init 中初始化 */
   progressCount: 0,
+  /** 该值在每一次绘制前根据与用户交互的结果进行给值 */
   indexOfCursor: 0,
+  /** 初始化数据 */
+  init: function (param: QuestionParamDataType) {
+    // 初始化数据
+    this.data = param;
+    // 参看是单问模式还是多问模式
+    const multi = Array.isArray(param);
+    /// 给值
+    this.multi = multi;
+    // 初始化类型
+    data.init();
+  },
 };
 
 /** data  */
-let data: DataType = {
+const data: QuestionDataType = {
   /** Current type
    *
    * -  0  ordinary  Q&A
@@ -26,10 +45,11 @@ let data: DataType = {
    *
    * - 0 普通问答
    * - 1 选型问答
+   *
+   * 该值会在每一次 changeCurrentIssue 时进行赋值
    */
-  // type: 0,
   get type() {
-    return originalData.type || 0;
+    return originalData.type;
   },
   set type(newValue: 0 | 1) {
     originalData.type = newValue;
@@ -41,7 +61,9 @@ let data: DataType = {
    *
    * 多问模式
    */
-  multi: false,
+  get multi(): boolean {
+    return originalData.multi;
+  },
   /** User input
    *
    * 用户输入
@@ -52,7 +74,7 @@ let data: DataType = {
    * 多问模式的进度，改变会触发当前问题的变更
    */
   get progressCount() {
-    return originalData.progressCount || 0;
+    return originalData.progressCount;
   },
   set progressCount(newValue: number) {
     originalData.progressCount = newValue;
@@ -68,7 +90,7 @@ let data: DataType = {
    * 当前的浮标位置，当改变时会触发 this.cursorTranslate 的自更新
    */
   get indexOfCursor() {
-    return originalData.indexOfCursor || 0;
+    return originalData.indexOfCursor;
   },
 
   set indexOfCursor(newValue: number) {
@@ -114,11 +136,25 @@ let data: DataType = {
    */
   results: [],
 
-  assign(_data: any): void {
-    Object.keys(_data).forEach((currentKey: any) => {
-      if ((this as any)[currentKey] != undefined)
-        (this as any)[currentKey] = _data[currentKey];
+  /** 混合问题 */
+  assign: function (_data: { [key: string]: string }): void {
+    Object.keys(_data).forEach((currentKey: string) => {
+      // @ts-expect-error  @ts-expect-error   @ts-expect-error
+      if (this[currentKey] != undefined) this[currentKey] = _data[currentKey];
     });
+  },
+  /** 初始化数据，仅在执行前初始化。防止数据残留 */
+  init: function (): void {
+    /// 清理旧的答案
+    this.results.length = 0;
+    // 清理旧的输入
+    this.userInput = [];
+    // 清理旧的光标位置
+    this.indexOfCursor = 0;
+    /// 该值的变化会初始化当前问题，所以才会有重复赋值 0 的情况
+    this.progressCount = originalData.multi
+      ? -(originalData.data as []).length
+      : 0;
   },
 };
 

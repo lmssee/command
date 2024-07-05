@@ -13,6 +13,7 @@ export default () => {
    * 终端屏的显示列数
    */
   const screenWidth = stdout.columns;
+  ///  向左移动的光标
   const transformLength = screenWidth ? `${t}${screenWidth}D` : `${t}123D`;
   const { type, currentIssue, userInput, cursorTranslate } = questionData;
   /** Display head
@@ -25,9 +26,9 @@ export default () => {
   // 打印选择模式
   if (type != 0) {
     stdout.write(
-      (currentIssue.tip as any[])
+      (currentIssue.tip as string[])
         .map(i =>
-          i == userInput
+          i == userInput[0]
             ? t.concat('25;1;4;5m').concat(Color.cyan(i))
             : Color.darkMagenta(i),
         )
@@ -38,7 +39,7 @@ export default () => {
       .split('')
       .reduce(
         (currentLen, currentEle) =>
-          currentLen + ((currentEle as any).codePointAt(0) > 0xfff ? 2 : 1),
+          currentLen + ((currentEle.codePointAt(0) as number) > 0xfff ? 2 : 1),
         0,
       );
     // 打印含提示且用户为输入时文本
@@ -50,7 +51,7 @@ export default () => {
       stdout.write(` ${userInput.join('')}`);
     } else {
       // 打印密码模式
-      stdout.write(` ${userInput.map(i => '*').join('')}`);
+      stdout.write(` ${userInput.map(() => '*').join('')}`);
     }
     cursorTranslate !== 0 && cursorMoveLeft(cursorTranslate);
   }

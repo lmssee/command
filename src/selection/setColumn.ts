@@ -9,16 +9,16 @@ const { stdout } = process;
 export default function setColumns() {
   const len = selectionData.data.length,
     { data, drawData } = selectionData;
-  let screenLength = Math.floor(stdout.columns / 2) - 10;
+  const screenLength = Math.floor(stdout.columns / 2) - 10;
   for (let i = 0; i < len; i++) {
     const element = data[i];
-    let pushData;
+    let pushData: string | number = 0;
     if (typeof element == 'string')
       pushData =
         element.length > screenLength
           ? element.slice(0, screenLength)
-          : data[i];
+          : (data[i] as string);
     else if (typeof element == 'number') pushData = element % 1000000000000000;
-    drawData.push(pushData);
+    (drawData as (string | number)[]).push(pushData);
   }
 }
