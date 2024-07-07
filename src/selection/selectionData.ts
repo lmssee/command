@@ -15,7 +15,11 @@ const data: DataType = {
   preview,
   private: privateValue,
   data: [],
-  assign(params: SelectionParamDataType) {
+  initData(params: SelectionParamDataType) {
+    // 清理旧的数据
+    this.reset();
+    // (Array.isArray(data) && (selectionData.data = [...data])) ||
+    // selectionData.assign(data);
     Object.keys(params).forEach(currentKey => {
       // @ts-expect-error 这里使用了 this ，但是又无法处理
       if (this[currentKey] != undefined) this[currentKey] = params[currentKey];
@@ -48,7 +52,7 @@ type DataType = SelectionParamDataMapType & {
    */
   drawData: (string | undefined)[];
   /** 将给订参数放进这里 */
-  assign: (_data: SelectionParamDataType) => void;
+  initData: (_data: SelectionParamDataType) => void;
   reset: () => void;
 };
 

@@ -71,13 +71,13 @@ import origin_selection from './originSelection';
 export default function selection(
   data: SelectionParamDataType,
   resultType?: 'number' | 'string',
-): Promise<string> {
+): Promise<string | number> {
   return new Promise((resolve, reject) => {
     commandData.on(Symbol('selection'), () =>
       origin_selection(data, resultType)
         .then(result => {
           commandData.remove();
-          resolve(result as string);
+          resolve(result);
         })
         .catch(() => {
           commandData.remove();

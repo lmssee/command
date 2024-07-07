@@ -15,20 +15,17 @@ const unexpectedExit = () =>
 export default async function (
   data: SelectionParamDataType,
   resultType: 'number' | 'string' = 'string',
-) {
-  selectionData.reset();
-  (Array.isArray(data) && (selectionData.data = [...data])) ||
-    selectionData.assign(data);
+): Promise<string | number> {
+  selectionData.initData(data);
 
   process.on('exit', unexpectedExit), cursorHide(), draw();
   // 等待用户选择
   await userSelect();
   // 移除监听
   process.removeListener('exit', unexpectedExit);
-  const resultString = selectionData.data[selectionData.select],
+  const resultString: string | number =
+      selectionData.data[selectionData.select],
     resultNumber = selectionData.select;
-  // 重置数据
-  selectionData.reset();
   // 返回结果
   return resultType == 'string' ? resultString : resultNumber;
 }
