@@ -9,7 +9,7 @@ const { stdout } = process;
 export default function setColumns() {
   const len = selectionData.data.length,
     { data, drawData } = selectionData;
-  const screenLength = Math.floor(stdout.columns / 2) - 10;
+  const screenLength = stdout.columns;
   for (let i = 0; i < len; i++) {
     const element = data[i];
     let pushData: string | number = 0;
