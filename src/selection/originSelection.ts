@@ -1,16 +1,19 @@
-import { cursorHide, t } from 'ismi-node-tools';
+import { _p, cursorHide, t } from 'ismi-node-tools';
 import draw from './draw';
 import selectionData from './selectionData';
 import { SelectionParamDataType } from './types';
 import userSelect from './userSelect';
-const { stdout } = process;
 
 /** unexpected exit
  *
  * 意外退出回调函数
  */
 const unexpectedExit = () =>
-  stdout.write(`${t}J${t}?25h ❌ ${selectionData.info}\n\n`);
+  /**
+   * 打印意外终止
+   *
+   */
+  _p(`${t}J${t}?25h ❌ ${selectionData.info}\n\n`);
 
 export default async function (
   data: SelectionParamDataType,

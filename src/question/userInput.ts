@@ -1,8 +1,6 @@
-import { Color, cursorShow, readInput, t } from 'ismi-node-tools';
+import { _p, Color, cursorShow, readInput, t } from 'ismi-node-tools';
 import draw from './draw';
 import questionData from './questionData';
-
-const { stdout } = process;
 
 /** Waiting for user keyboard input and processing data
  *
@@ -31,7 +29,7 @@ export default async function () {
            *  用户没有输入直接点击的回车键
            */
           if (userInput.length == 0) {
-            stdout.write(
+            _p(
               ' '
                 .repeat(2)
                 .concat(Color.red(currentIssue.text))
@@ -46,11 +44,11 @@ export default async function () {
            *
            * 打印结果
            */
-          stdout.write(`${t}1A${t}2K${t}J`);
+          _p(`${t}1A${t}2K${t}J`);
           // 私密模式则不打印
           currentIssue.private
             ? ''
-            : stdout.write(
+            : _p(
                 `👌 ${currentIssue.resultText || currentQuestion}: ${Color.random(currentIssue.type == 'text' ? currentResult : currentResult.replace(/./gm, '*'))}\n`,
               );
           cursorShow();

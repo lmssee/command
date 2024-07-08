@@ -1,5 +1,5 @@
 #! /usr/bin/env node
 /** 嗯 */
-import { Command } from "../exportMjs/index.mjs";
+import { Command } from '../mjs/index.mjs';
 
 new Command().run().end;

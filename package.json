@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "name": "ismi-command",
   "main": "cjs/index.cjs",
   "module": "mjs/index.mjs",
@@ -38,7 +38,7 @@
     "beautify": "npx prettier . -- write",
     "eslint": "npx eslint src",
     "versionPatch": "npm version patch --force --no-git-tag-version --allow-same-version=true",
-    "up": "npx ixxx pkg -u && npm run versionPatch && npm run build && cd dist && npm publish && cd ../"
+    "up": "npm run versionPatch && npm run build && cd dist && npm publish && cd ../"
   },
   "repository": {
     "type": "git",
@@ -83,7 +83,7 @@
   },
   "dependencies": {
     "ismi-js-tools": "^0.0.4",
-    "ismi-node-tools": "^0.0.11"
+    "ismi-node-tools": "^0.0.12"
   },
   "bin": {
     "ismi-command": "bin/index.js"

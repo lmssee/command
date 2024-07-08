@@ -1,3 +1,4 @@
+import { _p } from 'ismi-node-tools';
 import { AuxiliaryData } from './auxiliaryData';
 import { organizeHelpInformation } from './organizeHelpInformation';
 import paringUserArgs from './paringUserArgs';
@@ -9,10 +10,10 @@ import paringUserArgs from './paringUserArgs';
 export default function executeParsing(auxiliaryData: AuxiliaryData) {
   switch (auxiliaryData.state.code) {
     case 3:
-      process.stdout.write('已经执行过 `run`\n');
+      _p('已经执行过 `run`\n');
       return;
     case 4:
-      process.stdout.write('已完成全部\n');
+      _p('已完成全部\n');
       return;
     default:
       auxiliaryData.state = 3;

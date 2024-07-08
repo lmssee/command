@@ -1,4 +1,4 @@
-import { Color, cursorShow, readInput, t } from 'ismi-node-tools';
+import { _p, Color, cursorShow, readInput, t } from 'ismi-node-tools';
 import draw from './draw';
 import selectionData from './selectionData';
 /**
@@ -14,9 +14,14 @@ export default async function () {
     switch ((key as { name: string }).name) {
       case 'return':
         cursorShow();
-        process.stdout.write(`${t}1A${t}J`);
+        /**
+         *  1A 负责向上衣东一个空格位
+         *
+         *  J 负责清理光标后的屏幕内容
+         */
+        _p(`${t}1A${t}J`);
         !selectionData.private &&
-          process.stdout.write(
+          _p(
             `👌 ${resultText || info}: ${Color.random((data as string[])[select])}\n`,
           );
         return true;

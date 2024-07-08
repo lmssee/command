@@ -1,4 +1,4 @@
-import { Color, t } from 'ismi-node-tools';
+import { _p, Color, t } from 'ismi-node-tools';
 import { AuxiliaryData } from './auxiliaryData';
 import { ArgOriginBind, SubOptionsType } from './types';
 /** 空白 */
@@ -18,20 +18,18 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
     auxiliaryData.helpInfo !== 'help'
   ) {
     const data = auxiliaryData.originalBind[auxiliaryData.helpInfo];
-    process.stdout.write(
-      `${_blank}${data.name}${_blank}${Color.magenta(data.info)}\n\n`,
-    );
+    _p(`${_blank}${data.name}${_blank}${Color.magenta(data.info)}\n\n`);
     // 带子项的这里打印
     if (data.options && Object.keys(data.options).length > 0) {
-      process.stdout.write(
+      _p(
         `${Color.darkYellow(`${_blank}use:`)}  ${auxiliaryData.name}   ${
           auxiliaryData.helpInfo
         }   [subOptions/subAbbr  [value]]\n\n`,
       );
-      process.stdout.write(`${Color.cyan(`${_blank}subOptions:`)} \n\n`);
+      _p(`${Color.cyan(`${_blank}subOptions:`)} \n\n`);
       printHelpOther(data.options || {});
     } else {
-      process.stdout.write(
+      _p(
         `${Color.green(`${_blank}use:`)}  ${auxiliaryData.name}   ${
           auxiliaryData.helpInfo
         }    [value]\n\n`,
@@ -45,7 +43,7 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
     Array.isArray(auxiliaryData.helpInfo) &&
     (auxiliaryData.helpInfo as string[]).length == 2
   ) {
-    process.stdout.write(
+    _p(
       `${Color.cyan(' you can use:')}  ${auxiliaryData.name}   ${(
         auxiliaryData.helpInfo as []
       ).join('   ')}   [value]\n ${Color.green(' description:')} ${
@@ -59,7 +57,7 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
      *
      * 配置帮助文档
      */
-    process.stdout.write(
+    _p(
       `${Color.darkRed(' you can use:')}  ${
         auxiliaryData.name
       }  options/abbr  [subOptions/subAbbr  [value]]\n\n${Color.random(
@@ -104,23 +102,21 @@ function printHelpOther(
       (maxLength = Math.max(maxLength, currentEle.length)),
   );
   const len = Math.min(15, maxLength + 1);
-  process.stdout.write(formatHelpText({ len, name, info, abbr, color: false }));
-  process.stdout.write('\n\n');
+  _p(formatHelpText({ len, name, info, abbr, color: false }));
+  _p('\n\n');
   keys.forEach((currentKey: string) => {
     // @ts-expect-error 下面对 options 做了 undefined 判断，这里是有意为之
     const { name, abbr, info, options } = data[currentKey];
     const textDecoration = options && Object.keys(options).length > 0;
-    process.stdout.write(
-      formatHelpText({ len, name, info, abbr, textDecoration }),
-    );
-    process.stdout.write('\n');
+    _p(formatHelpText({ len, name, info, abbr, textDecoration }));
+    _p('\n');
   });
   /** 打印必须项 */
   if (printOther) {
     _otherMustInfo.forEach((currentEle: string) => {
       const [name, abbr, info] = currentEle.split('\x20');
-      process.stdout.write(formatHelpText({ len, name, info, abbr }));
-      process.stdout.write('\n');
+      _p(formatHelpText({ len, name, info, abbr }));
+      _p('\n');
     });
   }
 }

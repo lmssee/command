@@ -1,7 +1,7 @@
 import questionData, { originalData } from './questionData';
 import draw from './draw';
 import userInput from './userInput';
-import { t } from 'ismi-node-tools';
+import { _p, t } from 'ismi-node-tools';
 import { QuestionParamDataType } from './types';
 
 const { stdout } = process;
@@ -10,7 +10,7 @@ const { stdout } = process;
  * 意外退出回调函数
  */
 const unexpectedExit = () =>
-  stdout.write(
+  _p(
     `${t}${stdout.columns}D${t}J${t}?25h ❌ ${questionData.currentIssue.text} \n`,
   );
 
@@ -30,7 +30,7 @@ export default async function (
    *
    *  移除监听
    */
-  process.removeListener('exit', unexpectedExit), stdout.write(`${t}2K`);
+  process.removeListener('exit', unexpectedExit), _p(`${t}2K`);
   if (questionData.multi) {
     if (simpleResult) {
       return questionData.results.map(

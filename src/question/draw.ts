@@ -1,4 +1,4 @@
-import { t, Color, cursorMoveLeft } from 'ismi-node-tools';
+import { t, Color, cursorMoveLeft, _p } from 'ismi-node-tools';
 import questionData from './questionData';
 
 const { stdout } = process;
@@ -20,12 +20,10 @@ export default () => {
    *
    * 显示头
    */
-  stdout.write(
-    `${t}2K${transformLength}${Color.green('?')} ${currentIssue.text}: `,
-  );
+  _p(`${t}2K${transformLength}${Color.green('?')} ${currentIssue.text}: `);
   // 打印选择模式
   if (type != 0) {
-    stdout.write(
+    _p(
       (currentIssue.tip as string[])
         .map(i =>
           i == userInput[0]
@@ -43,15 +41,15 @@ export default () => {
         0,
       );
     // 打印含提示且用户为输入时文本
-    stdout.write(' '.concat(Color.darkGreen(currentIssue.tip as string)));
+    _p(' '.concat(Color.darkGreen(currentIssue.tip as string)));
     cursorMoveLeft(transformLength);
   } else {
     if (currentIssue.type == 'text') {
       // 打印不还提示的普通文本
-      stdout.write(` ${userInput.join('')}`);
+      _p(` ${userInput.join('')}`);
     } else {
       // 打印密码模式
-      stdout.write(` ${userInput.map(() => '*').join('')}`);
+      _p(` ${userInput.map(() => '*').join('')}`);
     }
     cursorTranslate !== 0 && cursorMoveLeft(cursorTranslate);
   }

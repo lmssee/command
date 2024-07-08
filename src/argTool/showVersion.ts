@@ -5,6 +5,7 @@
  */
 
 import {
+  _p,
   Color,
   fileExist,
   getCallerFilename,
@@ -38,11 +39,11 @@ export default function showVersion(auxiliaryData: AuxiliaryData): void {
   const json = readFileToJsonSync(targetFilename);
   /*** 文件没有配置名称及当前版本号 */
   if (!json.name && !json.version) {
-    process.stdout.write('抱歉，未找到版本定义说明\n');
+    _p('抱歉，未找到版本定义说明\n');
     return;
   }
   const { platform } = process;
-  process.stdout.write(
+  _p(
     `您好，${Color.random(hostname())}：应用 (${Color.darkYellow(
       json.name,
     )}) 的当前版本为 ${Color.red(json.version)} for ${platform == 'win32' ? 'Windows' : platform == 'darwin' ? 'mac' : platform} ${Color.darkMagenta(arch())}\n`,

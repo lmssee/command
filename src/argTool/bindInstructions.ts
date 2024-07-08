@@ -1,4 +1,5 @@
 import { typeOf } from 'ismi-js-tools';
+import { _p } from 'ismi-node-tools';
 import {
   BindParamsOptionsType,
   BindParamsType,
@@ -23,10 +24,10 @@ export default function bindInstruction(
   ///  检测当前
   switch (auxiliaryData.state.code) {
     case 3:
-      process.stdout.write('已经执行过 `run`\n');
+      _p('已经执行过 `run`\n');
       return;
     case 4:
-      process.stdout.write('已完成全部\n');
+      _p('已完成全部\n');
       return;
     default:
       auxiliaryData.state = 2;
