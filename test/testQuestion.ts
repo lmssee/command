@@ -1,4 +1,4 @@
-import { question } from 'index';
+import { question, selection } from 'index';
 import { test } from 'node:test';
 
 ///  测试 question
@@ -26,6 +26,17 @@ test.skip('test question tip', async () => {
     tip: '好的',
     private: true,
   });
+});
+
+/**
+ *  测试  question 、selection
+ *
+ */
+
+test.skip('question selection', () => {
+  question(['abc', 'def']);
+  selection(['gil', 'lmn']);
+  selection(['opq', 'rst']);
 });
 
 export default () => 1;

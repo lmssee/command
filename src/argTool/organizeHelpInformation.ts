@@ -8,6 +8,7 @@ const _blank = '\x20'.repeat(4);
  *  整理帮助信息
  */
 export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
+  // 设定当前状态
   auxiliaryData.state = 4;
   /**
    *

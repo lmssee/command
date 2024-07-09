@@ -47,11 +47,12 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): void {
     showVersion(auxiliaryData);
     return;
   }
+  /// 倘若在 -h  第一位
   if (_temporaryHelpIndex == 0) {
     auxiliaryData.helpInfo = 'help';
     return;
   }
-  const result: {
+  let result: {
     name: string;
     value?: string[];
     options?: { name: string; value?: string[] }[];
@@ -60,7 +61,7 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): void {
   if (_temporaryHelpIndex > 0) {
     manageResult(_args.slice(0, _temporaryHelpIndex + 1), auxiliaryData);
     // 设定值
-    auxiliaryData.args = manageData.result as ArgsType;
+    result = auxiliaryData.args = manageData.result as ArgsType;
     auxiliaryData.helpInfo =
       result.length == 0
         ? 'help'

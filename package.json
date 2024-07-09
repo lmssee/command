@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "name": "ismi-command",
   "main": "cjs/index.cjs",
   "module": "mjs/index.mjs",
@@ -33,7 +33,7 @@
     "clear": "npx ixxx rm dist",
     "clean": "npx ixxx pkg -u rm node_modules && npm install && npm run build",
     "diff": "npx ixxx pkg -d",
-    "test": "npx ixxx cls  && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 js 6 545 221 i 45 ts 465 js 369",
+    "test": "npx ixxx cls  && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 你 js 6 545 221  i 45 ts 465 js 369",
     "prettier": "npx prettier . --write",
     "beautify": "npx prettier . -- write",
     "eslint": "npx eslint src",
