@@ -11,7 +11,7 @@ const { stdout } = process;
  */
 const unexpectedExit = () =>
   _p(
-    `${t}${stdout.columns}D${t}J${t}?25h ❌ ${questionData.currentIssue.text} \n`,
+    `${t}${stdout.columns}D${t}J${t}?25h ❌ ${questionData.currentIssue.text} `,
   );
 
 export default async function (
@@ -30,7 +30,7 @@ export default async function (
    *
    *  移除监听
    */
-  process.removeListener('exit', unexpectedExit), _p(`${t}2K`);
+  process.removeListener('exit', unexpectedExit), _p(`${t}2K`, false);
   if (questionData.multi) {
     if (simpleResult) {
       return questionData.results.map(

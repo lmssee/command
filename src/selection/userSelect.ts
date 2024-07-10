@@ -19,10 +19,10 @@ export default async function () {
          *
          *  J 负责清理光标后的屏幕内容
          */
-        _p(`${t}1A${t}J`);
+        _p(`${t}1A${t}J`, false);
         !selectionData.private &&
           _p(
-            `👌 ${resultText || info}: ${Color.random((data as string[])[select])}\n`,
+            `👌 ${resultText || info}: ${Color.random((data as string[])[select])}`,
           );
         return true;
       case 'up':

@@ -13,7 +13,7 @@ const unexpectedExit = () =>
    * 打印意外终止
    *
    */
-  _p(`${t}J${t}?25h ❌ ${selectionData.info}\n\n`);
+  _p(`${t}J${t}?25h ❌ ${selectionData.info}\n`);
 
 export default async function (
   data: SelectionParamDataType,

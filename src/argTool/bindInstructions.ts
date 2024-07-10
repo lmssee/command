@@ -24,10 +24,10 @@ export default function bindInstruction(
   ///  检测当前
   switch (auxiliaryData.state.code) {
     case 3:
-      _p('已经执行过 `run`\n');
+      _p('已经执行过 `run`');
       return;
     case 4:
-      _p('已完成全部\n');
+      _p('已完成全部');
       return;
     default:
       auxiliaryData.state = 2;

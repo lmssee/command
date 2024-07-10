@@ -20,7 +20,10 @@ export default () => {
    *
    * 显示头
    */
-  _p(`${t}2K${transformLength}${Color.green('?')} ${currentIssue.text}: `);
+  _p(
+    `${t}2K${transformLength}${Color.green('?')} ${currentIssue.text}: `,
+    false,
+  );
   // 打印选择模式
   if (type != 0) {
     _p(
@@ -31,6 +34,7 @@ export default () => {
             : Color.darkMagenta(i),
         )
         .join('  '),
+      false,
     );
   } else if (userInput.length == 0 && currentIssue.tip) {
     const transformLength = (currentIssue.tip as string)
@@ -41,15 +45,15 @@ export default () => {
         0,
       );
     // 打印含提示且用户为输入时文本
-    _p(' '.concat(Color.darkGreen(currentIssue.tip as string)));
+    _p(' '.concat(Color.darkGreen(currentIssue.tip as string)), false);
     cursorMoveLeft(transformLength);
   } else {
     if (currentIssue.type == 'text') {
       // 打印不还提示的普通文本
-      _p(` ${userInput.join('')}`);
+      _p(` ${userInput.join('')}`, false);
     } else {
       // 打印密码模式
-      _p(` ${userInput.map(() => '*').join('')}`);
+      _p(` ${userInput.map(() => '*').join('')}`, false);
     }
     cursorTranslate !== 0 && cursorMoveLeft(cursorTranslate);
   }

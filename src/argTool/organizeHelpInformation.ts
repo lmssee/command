@@ -19,21 +19,21 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
     auxiliaryData.helpInfo !== 'help'
   ) {
     const data = auxiliaryData.originalBind[auxiliaryData.helpInfo];
-    _p(`${_blank}${data.name}${_blank}${Color.magenta(data.info)}\n\n`);
+    _p(`${_blank}${data.name}${_blank}${Color.magenta(data.info)}\n`);
     // 带子项的这里打印
     if (data.options && Object.keys(data.options).length > 0) {
       _p(
         `${Color.darkYellow(`${_blank}use:`)}  ${auxiliaryData.name}   ${
           auxiliaryData.helpInfo
-        }   [subOptions/subAbbr  [value]]\n\n`,
+        }   [subOptions/subAbbr  [value]]\n`,
       );
-      _p(`${Color.cyan(`${_blank}subOptions:`)} \n\n`);
+      _p(`${Color.cyan(`${_blank}subOptions:`)} \n`);
       printHelpOther(data.options || {});
     } else {
       _p(
         `${Color.green(`${_blank}use:`)}  ${auxiliaryData.name}   ${
           auxiliaryData.helpInfo
-        }    [value]\n\n`,
+        }    [value]\n`,
       );
     }
   } else if (
@@ -51,7 +51,7 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
         auxiliaryData.originalBind[auxiliaryData.helpInfo[0]]['options'][
           auxiliaryData.helpInfo[1]
         ].info
-      }\n`,
+      }`,
     );
   } else {
     /** Follow up on configuration help documents
@@ -63,7 +63,7 @@ export function organizeHelpInformation(auxiliaryData: AuxiliaryData) {
         auxiliaryData.name
       }  options/abbr  [subOptions/subAbbr  [value]]\n\n${Color.random(
         'options:',
-      )}\n\n`,
+      )}\n`,
     );
     printHelpOther(auxiliaryData.originalBind, true);
   }
@@ -104,20 +104,20 @@ function printHelpOther(
   );
   const len = Math.min(15, maxLength + 1);
   _p(formatHelpText({ len, name, info, abbr, color: false }));
-  _p('\n\n');
+  _p('');
   keys.forEach((currentKey: string) => {
     // @ts-expect-error 下面对 options 做了 undefined 判断，这里是有意为之
     const { name, abbr, info, options } = data[currentKey];
     const textDecoration = options && Object.keys(options).length > 0;
     _p(formatHelpText({ len, name, info, abbr, textDecoration }));
-    _p('\n');
+    _p('');
   });
   /** 打印必须项 */
   if (printOther) {
     _otherMustInfo.forEach((currentEle: string) => {
       const [name, abbr, info] = currentEle.split('\x20');
       _p(formatHelpText({ len, name, info, abbr }));
-      _p('\n');
+      _p('');
     });
   }
 }

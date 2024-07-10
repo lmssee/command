@@ -35,6 +35,7 @@ export default async function () {
                 .concat(Color.red(currentIssue.text))
                 .concat(' '.repeat(3))
                 .concat(`${t}5m👆${t}m${t}1A`),
+              false,
             );
             break;
           }
@@ -44,12 +45,12 @@ export default async function () {
            *
            * 打印结果
            */
-          _p(`${t}1A${t}2K${t}J`);
+          _p(`${t}1A${t}2K${t}J`, false);
           // 私密模式则不打印
           currentIssue.private
             ? ''
             : _p(
-                `👌 ${currentIssue.resultText || currentQuestion}: ${Color.random(currentIssue.type == 'text' ? currentResult : currentResult.replace(/./gm, '*'))}\n`,
+                `👌 ${currentIssue.resultText || currentQuestion}: ${Color.random(currentIssue.type == 'text' ? currentResult : currentResult.replace(/./gm, '*'))}`,
               );
           cursorShow();
           if (!multi || !++questionData.progressCount) return true;
