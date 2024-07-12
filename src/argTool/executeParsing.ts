@@ -1,4 +1,4 @@
-import { _p } from 'ismi-node-tools';
+import { _p } from 'a-node-tools';
 import { AuxiliaryData } from './auxiliaryData';
 import { organizeHelpInformation } from './organizeHelpInformation';
 import paringUserArgs from './paringUserArgs';

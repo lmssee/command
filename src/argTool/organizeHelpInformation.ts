@@ -1,4 +1,4 @@
-import { _p, Color, t } from 'ismi-node-tools';
+import { _p, Color, t } from 'a-node-tools';
 import { AuxiliaryData } from './auxiliaryData';
 import { ArgOriginBind, SubOptionsType } from './types';
 /** 空白 */

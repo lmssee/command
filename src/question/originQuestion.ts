@@ -1,7 +1,7 @@
 import questionData, { originalData } from './questionData';
 import draw from './draw';
 import userInput from './userInput';
-import { _p, t } from 'ismi-node-tools';
+import { _p, t } from 'a-node-tools';
 import { QuestionParamDataType } from './types';
 
 const { stdout } = process;

@@ -1,4 +1,4 @@
-import { typeOf } from 'ismi-js-tools';
+import { typeOf } from 'a-js-tools';
 import { CurrentIssueType } from './types';
 import questionData, { originalData } from './questionData';
 

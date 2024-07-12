@@ -1,4 +1,4 @@
-import { initializeFile } from 'ismi-node-tools';
+import { initializeFile } from 'a-node-tools';
 import { ArgsType, BindParamsType, StateType } from './types';
 import { auxiliaryData, createAuxiliaryData } from './auxiliaryData';
 import bindInstruction from './bindInstructions';

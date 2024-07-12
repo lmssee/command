@@ -1,4 +1,4 @@
-import { t, Color, cursorMoveUp, _p } from 'ismi-node-tools';
+import { t, Color, cursorMoveUp, _p } from 'a-node-tools';
 import selectionData from './selectionData';
 import setColumns from './setColumn';
 

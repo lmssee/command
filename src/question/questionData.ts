@@ -1,7 +1,7 @@
 import { QuestionDataType, QuestionParamDataType } from './types';
 import computeCodeCount from './computeCodeCount';
 import changeCurrentIssue from './changeCurrentIssue';
-import { cursorHide, cursorShow } from 'ismi-node-tools';
+import { cursorHide, cursorShow } from 'a-node-tools';
 
 export const originalData: {
   multi: boolean;

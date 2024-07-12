@@ -11,7 +11,7 @@ import {
   getCallerFilename,
   path,
   readFileToJsonSync,
-} from 'ismi-node-tools';
+} from 'a-node-tools';
 import { arch, hostname } from 'node:os';
 import { AuxiliaryData } from './auxiliaryData';
 

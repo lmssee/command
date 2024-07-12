@@ -1,24 +1,21 @@
-# is mi command
+# ai command
 
-This is a project for terminal interaction, serving the [cil](https://github.com/lmssee/cli) class
+This is a project for terminal interaction, serving the [ixxx](https://github.com/lmssee/ixxx) class
 
 ## language
 
-<table><tr>
-<td><a href="https://github.com/lmssee/command/blob/main/README.md"  target="_self">English</a></td>
-<td><a href="https://github.com/lmssee/command/blob/main/自述文件.md"  target="_self">中文</a></td>
-</tr></table>
+[English](https://github.com/lmssee/command/blob/main/README.md) [中文]https://github.com/lmssee/command/blob/main/自述文件.md()
 
 ## install
 
 ```sh
-npm install   ismi-command  --save
+npm install   a-command  --save
 ```
 
 ## use
 
 ```js
-import Command from 'ismi-command';
+import Command from 'a-command';
 ```
 
 ### Command section
@@ -29,7 +26,7 @@ For specific usage, please refer to their own instructions section
 
 ### Args section (get user start program params)
 
-`Args ` can obtain the parameters passed in by the user when starting the program
+`Args` can obtain the parameters passed in by the user when starting the program
 
 Analyzing user input parameters
 
@@ -46,7 +43,7 @@ During the execution process, you can refer to the 'state' value to view. When t
 
 Example：
 
-If your command name is `gig` , You added parameters：
+If your command name is `ixxx` , You added parameters：
 
 **Please avoid abbreviations as much as possible `h`、`v`**
 
@@ -54,13 +51,13 @@ _When you have multiple configuration items, you can use an array to group the c
 
 - Simplified example
   ```js
-  import { Args } from "ismi-command";
+  import { Args } from "a-command";
   const command: Args = new Args("ixxx");
   command.bind("init <-i> (Initialize configuration file)").run();
   ```
 - Simple configuration example
   ```js
-  import { Args } from "ismi-command";
+  import { Args } from "a-command";
   const command: Args = new Args("ixxx");
   command
     .bind({
@@ -73,7 +70,7 @@ _When you have multiple configuration items, you can use an array to group the c
 - Example of carrying sub item configuration
 
 ```js
-import { Args } from "ismi-command";
+import { Args } from "a-command";
 const command: Args = new Args("ixxx");
 command.bind({
   name: "init",
@@ -91,7 +88,7 @@ command.run(); // Users can use `gig init -o`
 - Example of carrying detailed configuration of sub items
 
 ```js
-import { Args } from "ismi-command";
+import { Args } from "a-command";
 const command: Args = new Args('ixxx');
 command.bind({
   name: "init",
@@ -121,7 +118,7 @@ command.run(); // Users can use `gig init -o`
 - Strange behavior binding parameters:
 
 ```ts
-import { Args } from 'ismi-command';
+import { Args } from 'a-command';
 const command: Args = new Args('ixxx');
 command.bind({
   'init <-i> (Initialize project)': [
@@ -240,14 +237,14 @@ _A function waiting for user input. Because it needs to wait, it is asynchronous
 The simplest use :
 
 ```js
-import { question } from 'ismi-command';
+import { question } from 'a-command';
 const result = await question('What do you want for lunch');
 ```
 
 Using custom configurations can provide users with a better experience.
 
 ```js
-import { question } from 'ismi-command';
+import { question } from 'a-command';
 const result = await question({
   text: 'What do you want for lunch',
   tip: 'Hamburg or Italian pasta',
@@ -258,7 +255,7 @@ const result = await question({
 You can also configure 'tip' as an array and configure Q&A as a simple selection.At this point, users can only choose from the values provided by 'tip' **Only suitable for simple selection, such as' yes' or 'no' or 'male' or 'female' options with more words, it is recommended to use [selection] (# selection - section - selection mode -)**
 
 ```js
-import { question } from 'ismi-command';
+import { question } from 'a-command';
 
 const result = await question({
   text: 'What do you want for lunch', // Required parameters
@@ -272,7 +269,7 @@ const result = await question({
 Multiple questions can also be provided at once, just place them in an array (array and object patterns can be mixed and matched)
 
 ```js
-import { question } from 'ismi-command';
+import { question } from 'a-command';
 
 const result = await question([
   {
@@ -298,7 +295,7 @@ _A function waiting for user input. Because it needs to wait, it is asynchronous
 The simplest use :
 
 ```js
-import { selection } from 'ismi-command';
+import { selection } from 'a-command';
 console.log('What do you want for lunch');
 const result = await selection([
   'Hamburg',
@@ -312,7 +309,7 @@ const result = await selection([
 Full configuration :
 
 ```js
-import  { selection } from "ismi-command";
+import  { selection } from "a-command";
 
 const result = await selection({
     showInfo: true,

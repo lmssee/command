@@ -1,4 +1,4 @@
-import { _p, cursorHide, t } from 'ismi-node-tools';
+import { _p, cursorHide, t } from 'a-node-tools';
 import draw from './draw';
 import selectionData from './selectionData';
 import { SelectionParamDataType } from './types';

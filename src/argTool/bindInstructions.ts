@@ -1,5 +1,5 @@
-import { typeOf } from 'ismi-js-tools';
-import { _p } from 'ismi-node-tools';
+import { typeOf } from 'a-js-tools';
+import { _p } from 'a-node-tools';
 import {
   BindParamsOptionsType,
   BindParamsType,

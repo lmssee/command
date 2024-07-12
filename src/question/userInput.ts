@@ -1,4 +1,4 @@
-import { _p, Color, cursorShow, readInput, t } from 'ismi-node-tools';
+import { _p, Color, cursorShow, readInput, t } from 'a-node-tools';
 import draw from './draw';
 import questionData from './questionData';
 

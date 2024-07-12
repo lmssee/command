@@ -1,11 +1,11 @@
 {
   "type": "module",
-  "version": "0.0.13",
-  "name": "ismi-command",
+  "version": "0.0.0",
+  "name": "a-command",
   "main": "cjs/index.cjs",
   "module": "mjs/index.mjs",
   "typings": "types/index.d.ts",
-  "description": "a fully functional of terminal ( Not allowed to be used in browsers)",
+  "description": "a fully command line code of terminal ( Not allowed to be used in browsers)",
   "files": [
     "bin",
     "mjs",
@@ -81,11 +81,11 @@
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.16.0"
   },
-  "dependencies": {
-    "ismi-js-tools": "^0.0.4",
-    "ismi-node-tools": "^0.0.14"
-  },
   "bin": {
-    "ismi-command": "bin/index.js"
+    "a-command": "bin/index.js"
+  },
+  "dependencies": {
+    "a-js-tools": "^0.0.0",
+    "a-node-tools": "^0.0.0"
   }
 }

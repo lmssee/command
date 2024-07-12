@@ -1,4 +1,4 @@
-import { t, Color, cursorMoveLeft, _p } from 'ismi-node-tools';
+import { t, Color, cursorMoveLeft, _p } from 'a-node-tools';
 import questionData from './questionData';
 
 const { stdout } = process;

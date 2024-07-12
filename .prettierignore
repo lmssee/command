@@ -1,7 +1,5 @@
 # Ignore artifacts:
 
-exportBin
-exportMjs
-exportCjs
-exportTypes
+dist
+
 test/out
