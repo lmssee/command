@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "name": "a-command",
   "main": "cjs/index.cjs",
   "module": "mjs/index.mjs",
@@ -64,7 +64,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@eslint/js": "^9.6.0",
+    "@eslint/js": "^9.7.0",
     "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
@@ -86,6 +86,6 @@
   },
   "dependencies": {
     "a-js-tools": "^0.0.0",
-    "a-node-tools": "^0.0.0"
+    "a-node-tools": "^0.0.2"
   }
 }
