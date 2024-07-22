@@ -1,3 +1,4 @@
+import { _p } from 'a-node-tools';
 import { question, selection } from 'index';
 import { test } from 'node:test';
 
@@ -6,17 +7,20 @@ test.skip('test question data store', async t => {
   // 测试字符串
   await t.test('test string param  question', async () => {
     const result1 = await question('123');
-    console.log('result1', result1);
+    _p('result');
+    _p(result1);
   });
 
   await t.test('test array params question', async () => {
     const result2 = await question(['1', '2', '3']);
-    console.log('result 2', result2);
+    _p('result 2');
+    _p(result2);
   });
 
   await t.test('test array params question', async () => {
     const result3 = await question(['1', '2', '3']);
-    console.log('result 3', result3);
+    _p('result 3');
+    _p(result3);
   });
 });
 

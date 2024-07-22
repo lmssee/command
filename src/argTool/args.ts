@@ -1,6 +1,6 @@
 import { initializeFile } from 'a-node-tools';
 import { ArgsType, BindParamsType, StateType } from './types';
-import { auxiliaryData, createAuxiliaryData } from './auxiliaryData';
+import { auxiliaryDataStore, createAuxiliaryData } from './auxiliaryData';
 import bindInstruction from './bindInstructions';
 import executeParsing from './executeParsing';
 import { organizeHelpInformation } from './organizeHelpInformation';
@@ -165,16 +165,16 @@ class Args {
   constructor(name: string = '') {
     if (typeof name !== 'string') name = `${name}`;
     this.uniKey = Symbol(name);
-    if (auxiliaryData[this.uniKey])
+    if (auxiliaryDataStore[this.uniKey])
       throw new Error(
         `${name} 已经存在，请更换初始化命令名称，若仍想在原命令上操作，请抽离为单独的文件做数据共享`,
       );
 
     // 初始化数据
-    auxiliaryData[this.uniKey] = createAuxiliaryData();
+    auxiliaryDataStore[this.uniKey] = createAuxiliaryData();
     // 初始化文件路径
-    [auxiliaryData[this.uniKey].__filename] = initializeFile();
-    auxiliaryData[this.uniKey].name =
+    [auxiliaryDataStore[this.uniKey].__filename] = initializeFile();
+    auxiliaryDataStore[this.uniKey].name =
       name ||
       (typeof process.argv[1] == 'string' &&
         process.argv.slice(1, 2)[0].replace(/.*\/.*?$/, '$1')) ||
@@ -193,7 +193,7 @@ class Args {
    * 命令名称
    */
   get name(): string {
-    return auxiliaryData[this.uniKey].name;
+    return auxiliaryDataStore[this.uniKey].name;
   }
 
   /** current state
@@ -213,7 +213,7 @@ class Args {
    */
 
   get state(): StateType {
-    return auxiliaryData[this.uniKey].state;
+    return auxiliaryDataStore[this.uniKey].state;
   }
 
   /**  over
@@ -227,7 +227,7 @@ class Args {
     const _this = this;
     class My extends Boolean {
       constructor() {
-        super(auxiliaryData[_this.uniKey].state.code == 4);
+        super(auxiliaryDataStore[_this.uniKey].state.code == 4);
       }
       /** 倘若 isEnd 返回的是 true ，证明用户使用 -v 、-h 。默认回去展示它们
        *
@@ -278,7 +278,7 @@ class Args {
    * 
    */
   bind(data: BindParamsType) {
-    bindInstruction(data, auxiliaryData[this.uniKey]);
+    bindInstruction(data, auxiliaryDataStore[this.uniKey]);
     return this;
   }
 
@@ -287,13 +287,15 @@ class Args {
    *  开始执行回调
    */
   run() {
-    executeParsing(auxiliaryData[this.uniKey]);
+    /** 由于怕数据污染，用户若使用多 args，这可能会导致该问题的出现。所以所有的数据保持单一 */
+    executeParsing(auxiliaryDataStore[this.uniKey]);
     return this;
   }
 
   /**
    *
-   * 获取有序的参数
+   * 获取有序的参数\
+   * *这些值是经过 `bind` 绑定的值，其他直接作用于顶级的值请使用 `this.values` 调用*
    *
    * 是一个继承于 {@link Array} 的对象，有属性
    *
@@ -305,8 +307,24 @@ class Args {
    *
    */
   get args(): ArgsType {
-    return auxiliaryData[this.uniKey].args;
+    return auxiliaryDataStore[this.uniKey].args;
   }
+
+  /**
+   *
+   * 该值为 `this.args` 的补充使用\
+   * 当值通过 `bind`  绑定并解析时，其解析值是与 `bind` 相对应的\
+   * 这就导致简单的应用想直接将参数传入而无法接收\
+   * （无法通过该方法，无法通过该方法直接使用，还需要从 `process.argv` 中解析）\
+   * 这实际上已经失去了封装便利性的优势，所以，使用该属性进行补充
+   *
+   * *现亦可通过 `this.args.$nomatch` 来获取相同的值*
+   *
+   */
+  get values(): (string | number | boolean)[] {
+    return auxiliaryDataStore[this.uniKey].values.slice();
+  }
+
   /**
    *
    * 用户可主动调用该方法在用户参数没有包含 -h 的时候展示帮助文档
@@ -316,7 +334,7 @@ class Args {
    * @memberof Args
    */
   help(optionName?: string, subOptionName?: string) {
-    const _auxiliaryData = auxiliaryData[this.uniKey];
+    const _auxiliaryData = auxiliaryDataStore[this.uniKey];
     if (
       typeof optionName == 'string' &&
       _auxiliaryData.originalBind[optionName]
@@ -329,7 +347,7 @@ class Args {
         _auxiliaryData.helpInfo = [optionName, subOptionName];
       else _auxiliaryData.helpInfo = optionName;
     } else _auxiliaryData.helpInfo = 'help';
-    organizeHelpInformation(auxiliaryData[this.uniKey]);
+    organizeHelpInformation(auxiliaryDataStore[this.uniKey]);
   }
 
   /**
@@ -339,7 +357,7 @@ class Args {
    * @memberof Args
    */
   version() {
-    showVersion(auxiliaryData[this.uniKey]);
+    showVersion(auxiliaryDataStore[this.uniKey]);
   }
 }
 

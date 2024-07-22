@@ -8,10 +8,11 @@ import {
   StateType,
 } from './types';
 
+/** 原始的用户输入的参数数组 */
 const originalArg: string[] = process.argv.slice(2);
 
 /** 定义数据中心 */
-export const auxiliaryData: { [key: symbol]: AuxiliaryData } = {};
+export const auxiliaryDataStore: { [key: symbol]: AuxiliaryData } = {};
 
 /** 定义类 */
 export class AuxiliaryData {
@@ -78,10 +79,19 @@ export class AuxiliaryData {
    * 原始参数
    */
   originalBind: ArgOriginBind = {};
+
+  /**
+   * 未匹配值的数据值\
+   * 使用 `bind` 绑定之外的数据，即直接作用在
+   */
+  values: (string | number | boolean)[] = [];
 }
 
 /** 仅作初始化用，其实这里直接返回不得了 */
 class TempArgs extends Array {
+  get $nomatch(): string[] {
+    return [];
+  }
   get $map(): ArgsMapType {
     return {};
   }
@@ -104,22 +114,47 @@ class TempArgs extends Array {
 export const createAuxiliaryData = () =>
   new Proxy(new AuxiliaryData(), {
     get(target, p, receive) {
+      /** 代理 args 属性的数据 */
       if (p == 'args') {
         const args = JSON.parse(
           // @ts-expect-error 后添加的属性，不好处理，这里就直接 ignore 了，后期有别的办法在进行修改
           JSON.stringify(target[Symbol.for('_args')] || []),
         );
         return new Proxy(args, {
-          get(_target, _p, _receiver) {
+          get(
+            _target,
+            _p:
+              | symbol
+              | '$map'
+              | '$arrMap'
+              | '$only'
+              | '$original'
+              | '$isVoid'
+              | '$nomatch',
+            _receiver,
+          ) {
             _receiver;
-            if (_p == '$map') return get$map(args);
-            if (_p == '$arrMap') return get$arrMap(args);
-            if (_p == '$only')
+            switch (_p) {
+              case '$nomatch':
+                return target.values.slice();
+            }
+            if (_p == '$map') {
+              return get$map(args);
+            }
+            if (_p == '$arrMap') {
+              return get$arrMap(args);
+            }
+            if (_p == '$only') {
               return args.map(
                 (currentEle: { name: string }) => currentEle.name,
               );
-            if (_p == '$original') return originalArg.slice();
-            if (_p == '$isVoid') return originalArg.slice().length == 0;
+            }
+            if (_p == '$original') {
+              return originalArg.slice();
+            }
+            if (_p == '$isVoid') {
+              return originalArg.slice().length == 0;
+            }
             return 'hello world';
           },
           set(_target, _p, _newValue, _receive) {

@@ -179,7 +179,11 @@ command.run(); // Users can use `gig init ts`
      * User's original input parameters
      */
     command.args.$original;
-
+    /**
+     *
+     * No matching data (not bound)
+      */
+    command.args.$nomatch
 
 ```
 
@@ -320,11 +324,10 @@ const result = await selection({
         "steak",
         "pizza",
         "chafing dish",
-
-    ],
+      ],
     showPreview: true,
     preview: "currently want to eat"
-     resultText: "Okay, then let's go eat "
+    resultText: "Okay, then let's go eat "
 });
 ```
 

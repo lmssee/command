@@ -32,9 +32,9 @@ export type SelectionParamDataMapType = {
   private?: boolean;
 };
 
-/** Parameter data type
+/** *Parameter data type*
  *
- * 参数数据类型
+ * *参数数据类型*
  **/
 export type SelectionParamDataType =
   | (string | number)[]

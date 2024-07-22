@@ -2,4 +2,4 @@
 /** 嗯 */
 import { Command } from '../mjs/index.mjs';
 
-new Command().run().end;
+new Command('a-command').run().end;

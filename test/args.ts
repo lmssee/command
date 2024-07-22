@@ -1,3 +1,4 @@
+import { _p } from 'a-node-tools';
 import assert from 'node:assert';
 import test from 'node:test';
 import Command from 'src/command';
@@ -6,7 +7,8 @@ import Command from 'src/command';
 test.skip('test command data store', () => {
   const command_1 = new Command('test command 1').run();
   const command_2 = new Command('test command 2').run();
-  console.log(command_1.name, command_2.name);
+  _p(command_1.name);
+  _p(command_2.name);
 });
 
 /**
@@ -25,16 +27,10 @@ test('command args', () => {
   });
 
   command.run().isEnd;
-  // console.log('====================================');
-  // console.log(command.args);
-  // console.log('---');
-  console.log(command.args.$map);
-  // console.log('---');
-  console.log(command.args.$arrMap);
-  // console.log('---');
-  // console.log(command.args.$arrMap.forEach(ele => console.log(ele)));
-  // console.log('====================================');
-  // console.log('no end');
+  _p(command.args.$arrMap);
+  _p(command.args.$nomatch);
+  _p(command.args.$map);
+  _p(command.values);
 
   /**
    * 当使用带 -h 或者  -v 的参数测试的时候内部解析会标记为已结束状态, 但是是否结束看具体需求

@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "name": "a-command",
   "main": "cjs/index.cjs",
   "module": "mjs/index.mjs",
@@ -33,7 +33,7 @@
     "clear": "npx ixxx rm dist",
     "clean": "npx ixxx pkg -u rm node_modules && npm install && npm run build",
     "diff": "npx ixxx pkg -d",
-    "test": "npx ixxx cls  && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs  i 123 ts 2365 你 js 6 545 221  i 45 ts 465 js 369",
+    "test": "npx ixxx cls  && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs value true 2  i 123 ts 2365 你 js 6 545 221  i 45 ts 465 js 369",
     "prettier": "npx prettier . --write",
     "beautify": "npx prettier . -- write",
     "eslint": "npx eslint src",
@@ -47,13 +47,8 @@
   "author": "lmssee <lmssee@outlook.com>  (https://lmssee.com)",
   "license": "ISC",
   "keywords": [
-    "letmiseesee",
-    "lmssee",
-    "is-mi",
-    "ismi",
     "command",
-    "ismi-command",
-    "is-mi-command"
+    "a-command"
   ],
   "homepage": "https://lmssee.github.io/command",
   "bugs": {
@@ -70,7 +65,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "eslint": "^8.57.0",
     "globals": "^15.8.0",
     "javascript-obfuscator": "^4.1.1",
@@ -79,13 +74,13 @@
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-obfuscator": "^1.1.0",
     "typescript": "^5.5.3",
-    "typescript-eslint": "^7.16.0"
+    "typescript-eslint": "^7.16.1"
   },
   "bin": {
     "a-command": "bin/index.js"
   },
   "dependencies": {
     "a-js-tools": "^0.0.0",
-    "a-node-tools": "^0.0.2"
+    "a-node-tools": "^0.0.3"
   }
 }

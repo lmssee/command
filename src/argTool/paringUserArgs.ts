@@ -57,41 +57,74 @@ export default function paringUserArgs(auxiliaryData: AuxiliaryData): void {
     value?: string[];
     options?: { name: string; value?: string[] }[];
   }[] = [];
-  // 命令含有  -h
+  /**
+   *  命令含有  -h
+   *
+   *  这里就不太关注没有匹配值时候的，即 `manageData.values`
+   *
+   *  但是为了防止其他人使用的时候便捷，这里考虑导出该值，但不会导出到 `auxiliaryData.args`
+   */
   if (_temporaryHelpIndex > 0) {
+    // 仅截断参数到已检测到第一个 `-h` 后 `help`  的位置
     manageResult(_args.slice(0, _temporaryHelpIndex + 1), auxiliaryData);
+    auxiliaryData.values = manageData.values;
     // 设定值
     result = auxiliaryData.args = manageData.result as ArgsType;
-    auxiliaryData.helpInfo =
-      result.length == 0
-        ? 'help'
-        : result[0].options == undefined || result[0].options?.length == 0
-          ? result[0].name
-          : [result[0].name, result[0].options[0].name];
-    return;
+    if (result.length == 0) {
+      auxiliaryData.helpInfo = 'help';
+    } else if (
+      result[0].options == undefined ||
+      result[0].options?.length == 0
+    ) {
+      auxiliaryData.helpInfo = result[0].name;
+    } else {
+      auxiliaryData.helpInfo = [result[0].name, result[0].options[0].name];
+    }
+  } else {
+    /// 非匹配到参看文档模式，即标准模式
+    manageResult(_args, auxiliaryData);
+    auxiliaryData.values = manageData.values;
+    // 正常的解析
+    auxiliaryData.args = manageData.result as ArgsType;
   }
-  manageResult(_args, auxiliaryData);
-  // 正常的解析
-  auxiliaryData.args = manageData.result as ArgsType;
 }
 
 /** 整理数据用到的数据 */
 const manageData: ManageDataType = {
+  /**  最终的结果，是由有固定格式的元素组成的数组 */
   result: [],
+  /** 临时储存值 */
+  values: [],
+  /** 当前的匹配参数值 */
   name: '',
+  /** 匹配的值 */
   object: { name: '', value: [], options: [] },
+  /** 匹配出来的子项的元素值 */
   item: { name: '', value: [] },
   resetObject(name) {
     this.name = name;
     this.object = { name, value: [], options: [] };
   },
+  /**
+   * 重置
+   */
   resetItem(name: string) {
     this.item = { name, value: [] };
+  },
+
+  /** 初始化数据 */
+  init() {
+    this.result = [];
+    this.values = [];
+    this.resetItem('');
+    this.resetObject('');
   },
 };
 
 /** 参数整理函数 */
 function manageResult(data: string[], auxiliaryData: AuxiliaryData): void {
+  /*** 初始化数据 */
+  manageData.init();
   // 解析每一个参数
   data.forEach((currentArg: string) => {
     const { name } = manageData;
@@ -154,32 +187,47 @@ function dataIsOption(name: string) {
 
 // 当值被认定为参数的值
 function dataIsValue(value: string | boolean | number) {
-  value =
-    value == 'true'
-      ? true
-      : value == 'false'
-        ? false
-        : value == Number(value)
-          ? Number(value)
-          : value;
-  if (manageData.name === '') return;
-  //   当下一定有值，判断当下是否有子项
-  (
-    manageData[manageData.item.name ? 'item' : 'object'].value as (
-      | string
-      | boolean
-      | number
-    )[]
-  ).push(value);
+  // value 值进行整理
+  if (value == 'true') {
+    value = true;
+  } else if (value == 'false') {
+    value = false;
+  } else if (value == Number(value)) {
+    value = Number(value);
+  }
+  if (manageData.name === '') {
+    // 之前这里直接 return，导致最顶层没有 values
+    manageData.values.push(value);
+  } else {
+    //   当下一定有值，判断当下是否有子项
+    (
+      manageData[manageData.item.name ? 'item' : 'object'].value as (
+        | string
+        | boolean
+        | number
+      )[]
+    ).push(value);
+  }
 }
-
-// 将匹配追加到数据
+/**
+ * 将匹配追加到数据\
+ * 当出现新的匹配的时候\
+ * 就会出现追加值的情况
+ *
+ */
 function addResultItem() {
   /** 拿到数据 */
   const { name, object, item, result } = manageData;
   /** 数据为空 */
-  if (name === '') return;
-  // @ts-expect-error  若有子项将子项推进父项
+  if (name === '') {
+    /**
+     *  之前当当前匹配值为空时直接返回\
+     * 可能会导致那些没有匹配数的值没有值
+     *
+     */
+    return;
+  }
+
   item.name && object.options?.push(item);
   // 将数据推进结果
   result.push(JSON.parse(JSON.stringify(object)));
