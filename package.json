@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "name": "a-command",
   "main": "cjs/index.cjs",
   "module": "mjs/index.mjs",
@@ -81,6 +81,6 @@
   },
   "dependencies": {
     "a-js-tools": "^0.0.0",
-    "a-node-tools": "^0.0.3"
+    "a-node-tools": "^0.0.4"
   }
 }
