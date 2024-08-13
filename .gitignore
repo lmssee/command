@@ -11,3 +11,5 @@ dist
 
 ## 测试文件
 test/out
+
+.DS_Store

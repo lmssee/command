@@ -35,7 +35,7 @@
     "diff": "npx ixxx pkg -d",
     "test": "npx ixxx cls  && rollup --config rollup.config.test.js  && node  test/out/test/index.mjs value true 2  i 123 ts 2365 你 js 6 545 221  i 45 ts 465 js 369",
     "prettier": "npx prettier . --write",
-    "beautify": "npx prettier . -- write",
+    "beautify": "npm run prettier",
     "eslint": "npx eslint src",
     "versionPatch": "npm version patch --force --no-git-tag-version --allow-same-version=true",
     "up": "npm run versionPatch && npm run build && cd dist && npm publish && cd ../"
