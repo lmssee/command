@@ -4,7 +4,7 @@ This is a project for terminal interaction, serving the [ixxx](https://github.co
 
 ## language
 
-[English](https://github.com/lmssee/command/blob/main/README.md) [中文]https://github.com/lmssee/command/blob/main/自述文件.md()
+[English](https://github.com/lmssee/command/blob/main/README.md) [中文](https://github.com/lmssee/command/blob/main/自述文件.md)
 
 ## install
 
